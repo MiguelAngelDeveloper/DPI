@@ -17,6 +17,6 @@ Route::get('/', function () {
 })->middleware('auth');
 
 Route::resource('channels', 'ChannelsController')->middleware('auth');
-Route::resource('breaks', 'BreaksController')->middleware('auth');
+Route::resource('windows', 'WindowsController')->middleware('auth');
 Route::resource('ads', 'AdsController')->middleware('auth');
 Route::resource('scheduling', 'SchedulingController')->middleware('auth');

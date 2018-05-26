@@ -2,7 +2,7 @@
 @section('content')
   <ol class="breadcrumb">
     <li class="breadcrumb-item">
-      <a href="{{ URL::to('breaks') }}">@lang('dpi.breaks')</a>
+      <a href="{{ URL::to('windows') }}">@lang('dpi.windows')</a>
     </li>
     <li class="breadcrumb-item active">@lang('dpi.show_break'): {{ $break->id }}</li>
   </ol>

@@ -69,17 +69,17 @@
               </li>
             </ul>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="@lang('dpi.breaks')">
-          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseBreaks">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="@lang('dpi.windows')">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseWindows">
             <i class="fa fa-fw fa-tasks"></i>
-            <span class="nav-link-text">@lang('dpi.breaks')</span>
+            <span class="nav-link-text">@lang('dpi.windows')</span>
           </a>
-          <ul class="sidenav-second-level collapse" id="collapseBreaks"  data-parent="#acordeon">
+          <ul class="sidenav-second-level collapse" id="collapseWindows"  data-parent="#acordeon">
             <li>
-              <a href="/breaks">@lang('dpi.view')</a>
+              <a href="/windows">@lang('dpi.view')</a>
             </li>
             <li>
-              <a href="/breaks/create">@lang('dpi.insert')</a>
+              <a href="/windows/create">@lang('dpi.insert')</a>
             </li>
           </ul>
         </li>

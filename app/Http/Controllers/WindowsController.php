@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Channels;
-use App\Breaks;
+use App\Windows;
 use View;
 use Redirect;
 use Session;
 use Validator;
 use Input;
 
-class BreaksController extends Controller
+class WindowsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -23,11 +23,11 @@ class BreaksController extends Controller
         //
         //
         //
-        $breaks = Breaks::all();
+        $windows = Windows::all();
 
         // load the view and pass the nerds
-        return View::make('dpi.breaks.index')
-       ->with('breaks', $breaks);
+        return View::make('dpi.windows.index')
+       ->with('windows', $windows);
     }
 
     /**
@@ -39,7 +39,7 @@ class BreaksController extends Controller
     {
         //
         $channels = Channels::all();
-        return View::make('dpi.breaks.create', compact('channels'));
+        return View::make('dpi.windows.create', compact('channels'));
     }
 
     /**
@@ -61,20 +61,20 @@ class BreaksController extends Controller
 
          // process the login
          if ($validator->fails()) {
-             return Redirect::to('breaks/create')
+             return Redirect::to('windows/create')
                  ->withErrors($validator)
                  ->withInput(Input::except('password'));
          } else {
              // store
-             $break = new Breaks;
-             $break->channel_id      = Input::get('name');
-             $break->init_date    = Input::get('init_date');
-             $break->duration =  Input::get('duration');
-             $break->save();
+             $window = new Windows;
+             $window->channel_id      = Input::get('name');
+             $window->init_date    = Input::get('init_date');
+             $window->duration =  Input::get('duration');
+             $window->save();
 
              // redirect
-             Session::flash('message',  __('dpi.ok_created', ['item' => __('dpi.break')]));
-             return Redirect::to('breaks');
+             Session::flash('message',  __('dpi.ok_created', ['item' => __('dpi.window')]));
+             return Redirect::to('windows');
          }
     }
 
@@ -87,11 +87,11 @@ class BreaksController extends Controller
     public function show($id)
     {
         //
-        $break = Breaks::find($id);
+        $window = Windows::find($id);
 
         // show the view and pass the nerd to it
-        return View::make('dpi.breaks.show')
-            ->with('break', $break);
+        return View::make('dpi.windows.show')
+            ->with('window', $window);
     }
 
     /**
@@ -103,11 +103,11 @@ class BreaksController extends Controller
     public function edit($id)
     {
         //
-        $break = Breaks::find($id);
+        $window = Windows::find($id);
         $channels = Channels::all();
         // show the edit form and pass the nerd
-       return View::make('dpi.breaks.edit')
-       ->with('break', $break)
+       return View::make('dpi.windows.edit')
+       ->with('window', $window)
         ->with('channels', $channels);
     }
 
@@ -131,20 +131,20 @@ class BreaksController extends Controller
 
                  // process the login
                  if ($validator->fails()) {
-                     return Redirect::to('breaks/create')
+                     return Redirect::to('windows/create')
                          ->withErrors($validator)
                          ->withInput(Input::except('password'));
                  } else {
                      // store
-                     $break =  Breaks::find($id);
-                     $break->channel_id      = Input::get('name');
-                     $break->init_date    = Input::get('init_date');
-                     $break->duration =  Input::get('duration');
-                     $break->save();
+                     $window =  Windows::find($id);
+                     $window->channel_id      = Input::get('name');
+                     $window->init_date    = Input::get('init_date');
+                     $window->duration =  Input::get('duration');
+                     $window->save();
 
                      // redirect
-                     Session::flash('message',  __('dpi.ok_updated', ['item' => __('dpi.break')]));
-                     return Redirect::to('breaks');
+                     Session::flash('message',  __('dpi.ok_updated', ['item' => __('dpi.window')]));
+                     return Redirect::to('windows');
                  }
     }
 
@@ -157,11 +157,11 @@ class BreaksController extends Controller
     public function destroy($id)
     {
         //
-        $break = Breaks::find($id);
-        $break->delete();
+        $window = Windows::find($id);
+        $window->delete();
 
         // redirect
-        Session::flash('message',  __('dpi.ok_deleted', ['item' => __('dpi.break')]));
-        return Redirect::to('breaks');
+        Session::flash('message',  __('dpi.ok_deleted', ['item' => __('dpi.window')]));
+        return Redirect::to('windows');
     }
 }

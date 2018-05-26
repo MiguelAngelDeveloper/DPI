@@ -2,9 +2,9 @@
 @section('content')
   <ol class="breadcrumb">
     <li class="breadcrumb-item">
-      <a href="{{ URL::to('breaks') }}">@lang('dpi.breaks')</a>
+      <a href="{{ URL::to('windows') }}">@lang('dpi.windows')</a>
     </li>
-    <li class="breadcrumb-item active">@lang('dpi.insert')</li>
+    <li class="breadcrumb-item active">@lang('dpi.updating_break'): {{ $break->id }}</li>
   </ol>
 
 <div class="text-center justify-content-center d-flex container">
@@ -18,14 +18,13 @@
     @endforeach
     </div>
   @endif
-    <h1 class="">@lang('dpi.insert')</h1>
-{{ Form::open(['url' => 'breaks']) }}
-
+    <h1 class="">@lang('dpi.update')</h1>
+{{ Form::model($break, array('route' => array('windows.update', $break->id), 'method' => 'PUT')) }}
     <div class="form-group mt-3">
     {{ Form::label('name', 'Nombre del canal') }}
     <select name="name">
       @foreach($channels as $channel)
-          <option value="{{$channel->id}}">{{$channel->name}}</option>
+          <option value="{{$channel->id}}"  @if($channel->id==$break->channel_id) selected='selected' @endif>{{$channel->name}}</option>
       @endforeach
     </select>
     </div>
@@ -43,7 +42,7 @@
 </div>
   <div class="form-group">
     <button type="submit" class="btn btn-info">
-      @lang('dpi.insert')
+      @lang('dpi.update')
     </button>
 </div>
 </div>

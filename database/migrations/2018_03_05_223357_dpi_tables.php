@@ -36,7 +36,7 @@ class DpiTables extends Migration
             $table->string('announcer',20);
             $table->timestamps();
         });
-        Schema::create('breaks', function (Blueprint $table) {
+        Schema::create('windows', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->charset = 'utf8';
             $table->collation = 'utf8_unicode_ci';
@@ -46,6 +46,15 @@ class DpiTables extends Migration
             $table->string('duration',5);
             $table->timestamps();
             $table->foreign('channel_id')->references('id')->on('channels');
+        });
+
+        Schema::create('schedules', function(Blueprint $table){
+          $table->engine = 'InnoDB';
+          $table->charset = 'utf8';
+          $table->collation = 'utf8_unicode_ci';
+          $table->increments('id');
+          $table->integer('break_id')->unsigned();
+          $table->timestamps();
         });
     }
 
@@ -57,8 +66,10 @@ class DpiTables extends Migration
     public function down()
     {
         //
+        Schema::dropIfExists('schedules');
         Schema::dropIfExists('ads');
-        Schema::dropIfExists('breaks');
+        Schema::dropIfExists('windows');
         Schema::dropIfExists('channels');
+
     }
 }

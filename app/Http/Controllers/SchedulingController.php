@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use View;
 
 class SchedulingController extends Controller
 {
@@ -27,6 +28,7 @@ class SchedulingController extends Controller
     public function create()
     {
         //
+          return View::make('dpi.scheduling.create');
     }
 
     /**

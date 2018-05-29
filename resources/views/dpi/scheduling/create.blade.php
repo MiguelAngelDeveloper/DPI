@@ -2,7 +2,7 @@
 @section('content')
   <ol class="breadcrumb">
     <li class="breadcrumb-item">
-      <a href="{{ URL::to('channels') }}">@lang('dpi.channels')</a>
+      <a href="{{ URL::to('scheduling') }}">@lang('dpi.channels')</a>
     </li>
     <li class="breadcrumb-item active">@lang('dpi.insert')</li>
   </ol>

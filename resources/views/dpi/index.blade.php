@@ -55,59 +55,59 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav navbar-sidenav" id="acordeon">
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="@lang('dpi.channels')">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right">
           <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseChannels" id="channels">
             <i class="fa fa-fw fa-tv"></i>
             <span class="nav-link-text">@lang('dpi.channels')</span>
           </a>
             <ul class="sidenav-second-level collapse" id="collapseChannels"  data-parent="#acordeon">
               <li>
-                <a href="/channels">@lang('dpi.view')</a>
+                <a href="{{ URL::to('/channels') }}">@lang('dpi.view')</a>
               </li>
               <li>
-                <a href="/channels/create">@lang('dpi.insert')</a>
+                <a href="{{ URL::to('/channels/create') }}">@lang('dpi.insert')</a>
               </li>
             </ul>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="@lang('dpi.windows')">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right">
           <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseWindows">
             <i class="fa fa-fw fa-tasks"></i>
             <span class="nav-link-text">@lang('dpi.windows')</span>
           </a>
           <ul class="sidenav-second-level collapse" id="collapseWindows"  data-parent="#acordeon">
             <li>
-              <a href="/windows">@lang('dpi.view')</a>
+              <a href="{{ URL::to('/windows') }}">@lang('dpi.view')</a>
             </li>
             <li>
-              <a href="/windows/create">@lang('dpi.insert')</a>
+              <a href="{{ URL::to('/windows/create') }}">@lang('dpi.insert')</a>
             </li>
           </ul>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="@lang('dpi.ads')">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right">
           <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseAds">
             <i class="fa fa-fw fa-bullhorn"></i>
             <span class="nav-link-text">@lang('dpi.ads')</span>
           </a>
           <ul class="sidenav-second-level collapse" id="collapseAds"  data-parent="#acordeon">
             <li>
-              <a href="/ads">@lang('dpi.view')</a>
+              <a href="{{ URL::to('/ads') }}">@lang('dpi.view')</a>
             </li>
             <li>
-              <a href="/ads/create">@lang('dpi.insert')</a>
+              <a href="{{ URL::to('/ads/create') }}">@lang('dpi.insert')</a>
             </li>
           </ul>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="@lang('dpi.scheduling')">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right">
           <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseScheduling">
             <i class="fa fa-fw fa-calendar"></i>
             <span class="nav-link-text">@lang('dpi.scheduling')</span>
           </a>
           <ul class="sidenav-second-level collapse" id="collapseScheduling"  data-parent="#acordeon">
             <li>
-              <a href="/scheduling/view">@lang('dpi.view')</a>
+              <a href="{{ URL::to('/scheduling/view') }}">@lang('dpi.view')</a>
             </li>
             <li>
-              <a href="/scheduling/create">@lang('dpi.insert')</a>
+              <a href="{{ URL::to('/scheduling/create') }}">@lang('dpi.insert')</a>
             </li>
           </ul>
         </li>
@@ -209,7 +209,15 @@
 
     <script type="text/javascript">
     $(document).ready(function(){
-        $('[data-toggle=tooltip]').tooltip();
+
+        $(document).tooltip({
+          track: true,
+          items: "[data-toggle=tooltip]",
+          content: function () {
+              return $(this).attr("title");
+          }
+      });
+      //  $('[data-toggle=tooltip]').tooltip();
         $.datepicker.setDefaults($.datepicker.regional['{{ app()->getLocale() }}']);
         $.timepicker.setDefaults($.timepicker.regional['{{ app()->getLocale() }}']);
         /*

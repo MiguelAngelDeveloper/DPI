@@ -19,19 +19,19 @@
     </div>
   @endif
     <h1 class="">@lang('dpi.insert')</h1>
-{{ Form::open(['url' => 'ads']) }}
+{{ Form::open(['url' => 'ads', 'autocomplete' => 'off']) }}
     <div class="form-group mt-3">
-    {{ Form::label('name', 'Nombre del Anuncio') }}
+    {{ Form::label('name', __('dpi.name')) }}
     {{ Form::text('name', null, ['class' => 'form-control', 'maxlength' => 100]) }}
     </div>
     <div class="form-group">
      <div class="form-row">
        <div class="col">
-       {{ Form::label('duration', 'Duración') }}
+       {{ Form::label('duration', __('dpi.duration')) }}
        {{ Form::text('duration', null, ['class' => 'form-control',  'id' => 'duration_ad']) }}
        </div>
        <div class="col">
-      {{ Form::label('tipo', 'Tipo') }}
+      {{ Form::label('tipo', __('dpi.type')) }}
       {{ Form::text('tipo', null, ['class' => 'form-control',  'maxlength' => 100]) }}
       </div>
     </div>
@@ -39,11 +39,11 @@
   <div class="form-group">
    <div class="form-row">
      <div class="col">
-    {{ Form::label('code', 'Código del Anuncio') }}
+    {{ Form::label('code', __('dpi.code')) }}
     {{ Form::text('code', null, ['class' => 'form-control',  'maxlength' => 11]) }}
     </div>
     <div class="col">
-    {{ Form::label('announcer', 'Anunciante') }}
+    {{ Form::label('announcer', __('dpi.announcer')) }}
     {{ Form::text('announcer', null, ['class' => 'form-control',  'maxlength' => 20]) }}
     </div>
   </div>

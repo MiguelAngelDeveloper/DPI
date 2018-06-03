@@ -12,7 +12,7 @@
         <h2>{{ $ad->name }}</h2>
         <p>
           <strong>@lang('dpi.duration'):</strong> {{ $ad->duration }}<br>
-          <strong>@lang('dpi.tipo'):</strong> {{ $ad->tipo }}<br>
+          <strong>@lang('dpi.type'):</strong> {{ $ad->tipo }}<br>
           <strong>@lang('dpi.code'):</strong> {{ $ad->code }}<br>
           <strong>@lang('dpi.announcer'):</strong> {{ $ad->announcer }}
         </p>

@@ -2,7 +2,7 @@
 @section('content')
   <ol class="breadcrumb">
     <li class="breadcrumb-item">
-      <a href="{{ URL::to('channels') }}">@lang('dpi.channels')</a>
+      <a href="{{ URL::to('scheling') }}">@lang('dpi.scheduling')</a>
     </li>
     <li class="breadcrumb-item active">@lang('dpi.insert')</li>
   </ol>
@@ -19,12 +19,24 @@
     </div>
   @endif
     <h1 class="">@lang('dpi.insert')</h1>
-{{ Form::open(['url' => 'channels']) }}
+{{ Form::open(['url' => 'scheduling', 'autocomplete' => 'off']) }}
 
-    <div class="form-group mt-3">
-    {{ Form::label('name', 'Nombre del canal') }}
-    {{ Form::text('name', null, ['class' => 'form-control']) }}
-    </div>
+<div class="form-row mt-3">
+  <div class="col">
+  {{ Form::label('name', __('dpi.channel_name')) }}
+<div>
+  <select name="name">
+    @foreach($channels as $channel)
+        <option value="{{$channel->id}}">{{$channel->name}}</option>
+    @endforeach
+  </select>
+</div>
+</div>
+<div class="col">
+   {{ Form::label('init_date', 'Fecha de inicio') }}
+   {{ Form::text('init_date', null, ['class' => 'form-control', 'id' =>'init_date']) }}
+</div>
+</div>
     <div class="form-group">
      <div class="form-row">
        <div class="col">

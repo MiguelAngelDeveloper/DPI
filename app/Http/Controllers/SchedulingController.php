@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use View;
+use App\Channels;
 
 class SchedulingController extends Controller
 {
@@ -27,6 +29,8 @@ class SchedulingController extends Controller
     public function create()
     {
         //
+        $channels = Channels::all();
+          return View::make('dpi.scheduling.create', compact('channels'));
     }
 
     /**
@@ -60,6 +64,7 @@ class SchedulingController extends Controller
     public function edit($id)
     {
         //
+          return View::make('dpi.scheduling.edit');
     }
 
     /**

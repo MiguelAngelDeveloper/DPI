@@ -11,7 +11,7 @@ use Redirect;
 use Session;
 use Validator;
 use Input;
-
+use App\Http\Helpers;
 class ChannelsController extends Controller
 {
 
@@ -55,8 +55,8 @@ class ChannelsController extends Controller
        // read more on validation at http://laravel.com/docs/validation
       $rules = array(
            'name'       => 'required|max:100',
-           'code'      => 'required|max:2',
-           'zone' => 'required|max:3'
+           'code'      => 'required|numeric',
+           'zone' => 'required|numeric'
        );
        $validator = Validator::make(Input::all(), $rules);
 
@@ -69,8 +69,8 @@ class ChannelsController extends Controller
            // store
            $channel = new Channels;
            $channel->name       = Input::get('name');
-           $channel->code      = Input::get('code');
-           $channel->zone = Input::get('zone');
+           $channel->code      = Helpers::addZerosPreffix(Input::get('code'), 2);
+           $channel->zone =  Helpers::addZerosPreffix(Input::get('zone'),3);  
            $channel->save();
 
            // redirect
@@ -126,8 +126,8 @@ class ChannelsController extends Controller
     // read more on validation at http://laravel.com/docs/validation
     $rules = array(
          'name'       => 'required|max:100',
-         'code'      => 'required|max:2',
-         'zone' => 'required|max:3'
+         'code'      => 'required|numeric',
+         'zone' => 'required|numeric'
      );
      $validator = Validator::make(Input::all(), $rules);
 
@@ -140,8 +140,8 @@ class ChannelsController extends Controller
         // store
         $channel = Channels::find($id);
         $channel->name       = Input::get('name');
-        $channel->code      = Input::get('code');
-        $channel->zone = Input::get('zone');
+        $channel->code      = Helpers::addZerosPreffix(Input::get('code'), 2);
+        $channel->zone =  Helpers::addZerosPreffix(Input::get('zone'),3);
         $channel->save();
 
         // redirect

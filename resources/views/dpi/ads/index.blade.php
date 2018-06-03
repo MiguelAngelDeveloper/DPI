@@ -19,7 +19,7 @@
               <td>@lang('dpi.id')</td>
               <td>@lang('dpi.name')</td>
               <td>@lang('dpi.duration')</td>
-              <td>@lang('dpi.tipo')</td>
+              <td>@lang('dpi.type')</td>
               <td>@lang('dpi.code')</td>
               <td>@lang('dpi.announcer')</td>
               <td>@lang('dpi.actions')</td>

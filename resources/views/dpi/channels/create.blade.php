@@ -19,20 +19,20 @@
     </div>
   @endif
     <h1 class="">@lang('dpi.insert')</h1>
-{{ Form::open(['url' => 'channels']) }}
+{{ Form::open(['url' => 'channels', 'autocomplete' => 'off']) }}
 
     <div class="form-group mt-3">
-    {{ Form::label('name', 'Nombre del canal') }}
+    {{ Form::label('name', __('dpi.channel_name')) }}
     {{ Form::text('name', null, ['class' => 'form-control']) }}
     </div>
     <div class="form-group">
      <div class="form-row">
        <div class="col">
-    {{ Form::label('code', 'Código del canal') }}
+    {{ Form::label('code', __('dpi.code')) }}
     {{ Form::text('code', null, ['class' => 'form-control',  'maxlength' => 2]) }}
     </div>
     <div class="col">
-    {{ Form::label('zone', 'Zona del canal') }}
+    {{ Form::label('zone', __('dpi.zone')) }}
     {{ Form::text('zone', null, ['class' => 'form-control',  'maxlength' => 3]) }}
       </div>
     </div>

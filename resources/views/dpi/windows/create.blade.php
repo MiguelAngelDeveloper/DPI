@@ -19,7 +19,7 @@
     </div>
   @endif
     <h1 class="">@lang('dpi.insert')</h1>
-{{ Form::open(['url' => 'windows']) }}
+{{ Form::open(['url' => 'windows', 'autocomplete' => 'off']) }}
 
     <div class="form-group mt-3">
     {{ Form::label('name', 'Nombre del canal') }}

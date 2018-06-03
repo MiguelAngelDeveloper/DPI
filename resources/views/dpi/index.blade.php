@@ -55,7 +55,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav navbar-sidenav" id="acordeon">
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="@lang('dpi.channels')">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" >
           <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseChannels" id="channels">
             <i class="fa fa-fw fa-tv"></i>
             <span class="nav-link-text">@lang('dpi.channels')</span>
@@ -69,7 +69,7 @@
               </li>
             </ul>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="@lang('dpi.windows')">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right">
           <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseWindows">
             <i class="fa fa-fw fa-tasks"></i>
             <span class="nav-link-text">@lang('dpi.windows')</span>
@@ -83,7 +83,7 @@
             </li>
           </ul>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="@lang('dpi.ads')">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right">
           <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseAds">
             <i class="fa fa-fw fa-bullhorn"></i>
             <span class="nav-link-text">@lang('dpi.ads')</span>
@@ -97,7 +97,7 @@
             </li>
           </ul>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="@lang('dpi.scheduling')">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right">
           <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseScheduling">
             <i class="fa fa-fw fa-calendar"></i>
             <span class="nav-link-text">@lang('dpi.scheduling')</span>
@@ -111,7 +111,7 @@
             </li>
           </ul>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="@lang('dpi.reports')">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right">
           <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#acordeon">
             <i class="fa fa-fw fa-table"></i>
             <span class="nav-link-text">Informes</span>
@@ -200,7 +200,6 @@
     <script src={{asset("js/jquery-ui-timepicker-addon.js")}}></script>
     <script src={{asset("js/datepicker-es.js")}}></script>
     <script src={{asset("js/jquery-ui-timepicker-addon-i18n.min.js")}}></script>
-  <!--  <script src={{asset("js/jquery.datetimepicker.full.min.js")}}></script> -->
 
     <!-- Custom scripts for all pages-->
     <script src={{asset("js/sb-admin.min.js")}}></script>
@@ -209,7 +208,7 @@
 
     <script type="text/javascript">
     $(document).ready(function(){
-        $('[data-toggle=tooltip]').tooltip();
+      //  $('[data-toggle=tooltip]').tooltip();
         $.datepicker.setDefaults($.datepicker.regional['{{ app()->getLocale() }}']);
         $.timepicker.setDefaults($.timepicker.regional['{{ app()->getLocale() }}']);
         /*
@@ -225,6 +224,7 @@
           });
           */
           $('#init_date').datetimepicker({
+            dateFormat: 'yy-mm-dd',
             timeFormat: 'HH:mm:ss',
             controlType: 'select',
             oneLine: true

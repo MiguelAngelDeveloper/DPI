@@ -20,3 +20,4 @@ Route::resource('channels', 'ChannelsController')->middleware('auth');
 Route::resource('windows', 'WindowsController')->middleware('auth');
 Route::resource('ads', 'AdsController')->middleware('auth');
 Route::resource('scheduling', 'SchedulingController')->middleware('auth');
+Route::resource('reports', 'ReportsController')->middleware('auth');

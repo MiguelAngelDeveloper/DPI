@@ -56,6 +56,7 @@ class DpiTables extends Migration
           $table->integer('window_id')->unsigned();
           $table->timestamps();
         });
+
     }
 
     /**

@@ -16,4 +16,20 @@ class Helpers {
       }
       return $data;
   }
+  public static function getMonthFromVerFilename($month){
+    switch ($month) {
+      case 'A':
+        return '10';
+        break;
+      case 'B':
+        return '11';
+        break;
+      case 'C':
+        return '11';
+        break;
+      default:
+        return $month;
+        break;
+    }
+  }
 }

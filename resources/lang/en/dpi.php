@@ -38,4 +38,9 @@ return [
 'insert' => 'Insert',
 'update' => 'Update',
 'remove' => 'Remove',
+'verifile' => 'Verification file',
+'verify' => 'Verify',
+'network' => 'Network',
+'month' => 'Month',
+'day' => 'Day',
 ];

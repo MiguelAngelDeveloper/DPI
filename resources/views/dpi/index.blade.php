@@ -62,10 +62,10 @@
           </a>
             <ul class="sidenav-second-level collapse" id="collapseChannels"  data-parent="#acordeon">
               <li>
-                <a href="/channels">@lang('dpi.view')</a>
+                <a href="{{ URL::to('/channels') }}">@lang('dpi.view')</a>
               </li>
               <li>
-                <a href="/channels/create">@lang('dpi.insert')</a>
+                <a href="{{ URL::to('/channels/create') }}">@lang('dpi.insert')</a>
               </li>
             </ul>
         </li>
@@ -76,10 +76,10 @@
           </a>
           <ul class="sidenav-second-level collapse" id="collapseWindows"  data-parent="#acordeon">
             <li>
-              <a href="/windows">@lang('dpi.view')</a>
+              <a href="{{ URL::to('/windows') }}">@lang('dpi.view')</a>
             </li>
             <li>
-              <a href="/windows/create">@lang('dpi.insert')</a>
+              <a href="{{ URL::to('/windows/create') }}">@lang('dpi.insert')</a>
             </li>
           </ul>
         </li>
@@ -90,10 +90,10 @@
           </a>
           <ul class="sidenav-second-level collapse" id="collapseAds"  data-parent="#acordeon">
             <li>
-              <a href="/ads">@lang('dpi.view')</a>
+              <a href="{{ URL::to('/ads') }}">@lang('dpi.view')</a>
             </li>
             <li>
-              <a href="/ads/create">@lang('dpi.insert')</a>
+              <a href="{{ URL::to('/ads/create') }}">@lang('dpi.insert')</a>
             </li>
           </ul>
         </li>
@@ -104,24 +104,24 @@
           </a>
           <ul class="sidenav-second-level collapse" id="collapseScheduling"  data-parent="#acordeon">
             <li>
-              <a href="/scheduling/view">@lang('dpi.view')</a>
+              <a href="{{ URL::to('/scheduling') }}">@lang('dpi.view')</a>
             </li>
             <li>
-              <a href="/scheduling/create">@lang('dpi.insert')</a>
+              <a href="{{ URL::to('/scheduling/create') }}">@lang('dpi.insert')</a>
             </li>
           </ul>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right">
-          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#acordeon">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseReports" data-parent="#acordeon">
             <i class="fa fa-fw fa-table"></i>
-            <span class="nav-link-text">Informes</span>
+            <span class="nav-link-text">@lang('dpi.reports')</span>
           </a>
-          <ul class="sidenav-second-level collapse" id="collapseComponents">
+          <ul class="sidenav-second-level collapse" id="collapseReports">
             <li>
-              <a href="navbar.html">Navbar</a>
+              <a href="{{ URL::to('/reports') }}">@lang('dpi.view')</a>
             </li>
             <li>
-              <a href="cards.html">Cards</a>
+              <a href="{{ URL::to('/reports/create') }}">@lang('dpi.verifile')</a>
             </li>
           </ul>
         </li>

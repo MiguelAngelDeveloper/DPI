@@ -23,8 +23,8 @@
 <span>@lang('dpi.day'): {{ $fileDetail['day'] }} </span>
 <span>@lang('dpi.network'): {{ $fileDetail['network'] }} </span>
 <span>@lang('dpi.zone'): {{ $fileDetail['zone'] }} </span>
-<div class="container text-center justify-content-center d-flex">
-  <table class="table table-hover table-responsive">
+<div class="text-center justify-content-center d-flex">
+  <table class="table table-hover table-responsive table-condensed ">
       <thead>
           <tr>
               <td>@lang('dpi.airedSportDate')</td>

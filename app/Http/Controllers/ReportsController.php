@@ -129,7 +129,8 @@ class ReportsController extends Controller
   private function parseVerFile ($file){
       $filepath = $file->getRealPath();
       $contents = File::get($filepath);
-      $lines = explode('\r\n',trim($contents));
+      $lines = explode(PHP_EOL,trim($contents));
+      $reports = array();
       foreach ($lines as $index => $line) {
         $members = explode(' ',trim($line));
         $report['airedSportDate'] = $members[1];
@@ -139,7 +140,7 @@ class ReportsController extends Controller
         $report['actualAiredLength'] = $members[9];
         $report['actualAiredPosition'] = $members[10];
         $report['spotId'] = $members[11];
-        $report['statusCode'] = $members[11];
+        $report['statusCode'] = $members[12];
         $reports[] = $report;
       }
       return $reports;

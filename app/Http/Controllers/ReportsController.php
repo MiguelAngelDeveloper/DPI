@@ -21,7 +21,9 @@ class ReportsController extends Controller
     {
         //
         $reports = array();
-        return View::make('dpi.reports.index')->with('reports', $reports);
+        $fileDetail = array();
+        return View::make('dpi.reports.index')->with('reports', $reports)
+        ->with('fileDetail', $fileDetail);;
     }
 
     /**
@@ -60,10 +62,11 @@ class ReportsController extends Controller
         } else {
 
           $reports = $this->parseVerFile($file);
-
+          $fileDetail = $this->parseVerFilename($filename);
         //  File::get($request->verificationfile->getRealPath());
         //  return Redirect::to('reports')->with('reports', $reports);
-        return View::make('dpi.reports.index')->with('reports', $reports);
+        return View::make('dpi.reports.index')->with('reports', $reports)
+        ->with('fileDetail', $fileDetail);
         }
     }
 
@@ -125,11 +128,20 @@ class ReportsController extends Controller
 
   private function parseVerFile ($file){
       $filepath = $file->getRealPath();
-      $filename = $file->getClientOriginalName();
-      $parsedFilename = $this->parseVerFilename($filename);
       $contents = File::get($filepath);
-      $report = $parsedFilename;
-      $reports[] = $report;
+      $lines = explode('\r\n',trim($contents));
+      foreach ($lines as $index => $line) {
+        $members = explode(' ',trim($line));
+        $report['airedSportDate'] = $members[1];
+        $report['scheduledTime'] = $members[2];
+        $report['spotLenght'] = $members[7];
+        $report['actualAiredTime'] = $members[8];
+        $report['actualAiredLength'] = $members[9];
+        $report['actualAiredPosition'] = $members[10];
+        $report['spotId'] = $members[11];
+        $report['statusCode'] = $members[11];
+        $reports[] = $report;
+      }
       return $reports;
     }
 

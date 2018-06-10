@@ -19,23 +19,35 @@
   @endforeach
   </div>
 @endif
+<span>@lang('dpi.month'): {{ $fileDetail['month'] }} </span>
+<span>@lang('dpi.day'): {{ $fileDetail['day'] }} </span>
+<span>@lang('dpi.network'): {{ $fileDetail['network'] }} </span>
+<span>@lang('dpi.zone'): {{ $fileDetail['zone'] }} </span>
 <div class="container text-center justify-content-center d-flex">
   <table class="table table-hover table-responsive">
       <thead>
           <tr>
-              <td>@lang('dpi.month')</td>
-              <td>@lang('dpi.day')</td>
-              <td>@lang('dpi.network')</td>
-              <td>@lang('dpi.zone')</td>
+              <td>@lang('dpi.airedSportDate')</td>
+              <td>@lang('dpi.scheduledTime')</td>
+              <td>@lang('dpi.spotLenght')</td>
+              <td>@lang('dpi.actualAiredTime')</td>
+              <td>@lang('dpi.actualAiredLength')</td>
+              <td>@lang('dpi.actualAiredPosition')</td>
+              <td>@lang('dpi.spotId')</td>
+              <td>@lang('dpi.statusCode')</td>
           </tr>
       </thead>
       <tbody>
       @foreach($reports as $key => $value)
           <tr>
-              <td>{{ $value['month'] }}</td>
-              <td>{{ $value['day'] }}</td>
-              <td>{{ $value['network'] }}</td>
-              <td>{{ $value['zone'] }}</td>
+              <td>{{ $value['airedSportDate'] }}</td>
+              <td>{{ $value['scheduledTime'] }}</td>
+              <td>{{ $value['spotLenght'] }}</td>
+              <td>{{ $value['actualAiredTime'] }}</td>
+              <td>{{ $value['actualAiredLength'] }}</td>
+              <td>{{ $value['actualAiredPosition'] }}</td>
+              <td>{{ $value['spotId'] }}</td>
+              <td>{{ $value['statusCode'] }}</td>
           </tr>
       @endforeach
       </tbody>

@@ -133,14 +133,14 @@ class ReportsController extends Controller
       $reports = array();
       foreach ($lines as $index => $line) {
         $members = explode(' ',trim($line));
-        $report['airedSportDate'] = $members[1];
+        $report['airedSpotDate'] = $members[1];
         $report['scheduledTime'] = $members[2];
         $report['spotLenght'] = $members[7];
         $report['actualAiredTime'] = $members[8];
         $report['actualAiredLength'] = $members[9];
         $report['actualAiredPosition'] = $members[10];
         $report['spotId'] = $members[11];
-        $report['statusCode'] = $members[12];
+        $report['statusCode'] =Helpers::getVerFileStatusCode($members[12]);
         $reports[] = $report;
       }
       return $reports;

@@ -144,7 +144,10 @@
   <div class="content-wrapper">
     <div class="container-fluid">
 @section('content')
-  <h1>DashBoard</h1>
+  <div class="row h-100 justify-content-center align-items-center">
+<h1>{{ config('app.name') }}</h1>
+  </div>
+
 @show
     </div>
     <!-- /.container-fluid-->

@@ -71,4 +71,5 @@ return [
 'code0021' => 'Fallo, Indicado Tarde',
 'code0022' => 'Fallo, Colisiñon de Canal',
 'code0023' => 'Fallo, Sin señal en la ventana',
+'search' => 'Buscar',
 ];

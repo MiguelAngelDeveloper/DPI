@@ -71,4 +71,5 @@ return [
 'code0021' => 'Failed, Cued Late',
 'code0022' => 'failed, Channel Collision',
 'code0023' => 'Failed, No Cue in Window',
+'search' => 'Search',
 ];

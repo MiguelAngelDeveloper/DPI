@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use View;
+use App\Schedules;
 use App\Channels;
+
 
 class SchedulingController extends Controller
 {
@@ -16,9 +18,9 @@ class SchedulingController extends Controller
     public function index()
     {
         //
-       $scheduling = Scheduling::all();
+       $schedules = Schedules::all();
         return View::make('dpi.scheduling.index')
-       ->with('scheduling', $scheduling);
+       ->with('scheduling', $schedules);
     }
 
     /**

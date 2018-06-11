@@ -7,9 +7,6 @@
     <li class="breadcrumb-item active">@lang('dpi.insert')</li>
   </ol>
 
-<div class="text-center justify-content-center d-flex container">
-
-<div class="card p-5">
   <!-- if there are creation errors, they will show here -->
   @if($errors->all())
     <div class="alert alert-danger">
@@ -19,11 +16,10 @@
     </div>
   @endif
     <h1 class="">@lang('dpi.insert')</h1>
-{{ Form::open(['url' => 'scheduling', 'autocomplete' => 'off']) }}
+{{ Form::open(['url' => 'scheduling', 'autocomplete' => 'off', 'class' =>'form-inline']) }}
 
-<div class="form-row mt-3">
-  <div class="col">
-  {{ Form::label('name', __('dpi.channel_name')) }}
+<div class="form-group mb-2">
+  {{ Form::label('name', __('dpi.channel_name'), array('class' => 'mr-2')) }}
 <div>
   <select name="name">
     @foreach($channels as $channel)
@@ -32,29 +28,13 @@
   </select>
 </div>
 </div>
-<div class="col">
-   {{ Form::label('init_date', 'Fecha de inicio') }}
-   {{ Form::text('init_date', null, ['class' => 'form-control', 'id' =>'init_date']) }}
+<div class="form-group mx-sm-3 mb-2">
+  {{ Form::label('init_date', __('dpi.init_date'), array('class' => 'mr-2')) }}
+  {{ Form::text('init_date', null, ['class' => 'form-control', 'id' =>'init_date']) }}
 </div>
-</div>
-    <div class="form-group">
-     <div class="form-row">
-       <div class="col">
-    {{ Form::label('code', 'Código del canal') }}
-    {{ Form::text('code', null, ['class' => 'form-control',  'maxlength' => 2]) }}
-    </div>
-    <div class="col">
-    {{ Form::label('zone', 'Zona del canal') }}
-    {{ Form::text('zone', null, ['class' => 'form-control',  'maxlength' => 3]) }}
-      </div>
-    </div>
-</div>
-  <div class="form-group">
-    <button type="submit" class="btn btn-info">
-      @lang('dpi.insert')
-    </button>
-</div>
-</div>
+<button type="submit" class="btn btn-primary mb-2">@lang('dpi.search')</button>
+
+
 {{ Form::close() }}
-</div>
+
 @stop

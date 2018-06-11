@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Scheduling extends Model
+class Schedules extends Model
 {
     //
 }

@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use View;
 use App\Schedules;
 use App\Channels;
-
+use App\Windows;
+use Input;
+use Redirect;
 
 class SchedulingController extends Controller
 {
@@ -28,7 +30,7 @@ class SchedulingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         //
         $channels = Channels::all();
@@ -44,6 +46,12 @@ class SchedulingController extends Controller
     public function store(Request $request)
     {
         //
+        $channelId = Input::get('channel');
+          $windows = Windows::whereHas('channel', function($q) {
+            $q->where('id', 1);
+          })->get();
+$channels = Channels::all();
+  return View::make('dpi.scheduling.create', compact('channels'))->with('windows',$windows)->with('id',$channelId);
     }
 
     /**
@@ -55,6 +63,7 @@ class SchedulingController extends Controller
     public function show($id)
     {
         //
+
     }
 
     /**

@@ -19,9 +19,9 @@
 {{ Form::open(['url' => 'scheduling', 'autocomplete' => 'off', 'class' =>'form-inline']) }}
 
 <div class="form-group mb-2">
-  {{ Form::label('name', __('dpi.channel_name'), array('class' => 'mr-2')) }}
+  {{ Form::label('channel', __('dpi.channel_name'), array('class' => 'mr-2')) }}
 <div>
-  <select name="name">
+  <select name="channel">
     @foreach($channels as $channel)
         <option value="{{$channel->id}}">{{$channel->name}}</option>
     @endforeach
@@ -33,8 +33,13 @@
   {{ Form::text('init_date', null, ['class' => 'form-control', 'id' =>'init_date']) }}
 </div>
 <button type="submit" class="btn btn-primary mb-2">@lang('dpi.search')</button>
-
-
 {{ Form::close() }}
-
+@if(isset($windows))
+  @foreach ($windows as $key => $window)
+    <p>{{ $window->init_date }}</p>
+  @endforeach
+@endif
+@if(isset($id))
+{{$id}}
+@endif
 @stop

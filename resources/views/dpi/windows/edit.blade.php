@@ -19,12 +19,12 @@
     </div>
   @endif
     <h1 class="">@lang('dpi.update')</h1>
-{{ Form::model($break, array('route' => array('windows.update', $break->id), 'method' => 'PUT', 'autocomplete' => 'off')) }}
+{{ Form::model($window, array('route' => array('windows.update', $window->id), 'method' => 'PUT', 'autocomplete' => 'off')) }}
     <div class="form-group mt-3">
     {{ Form::label('name', __('dpi.channel_name')) }}
     <select name="name">
       @foreach($channels as $channel)
-          <option value="{{$channel->id}}"  @if($channel->id==$break->channel_id) selected='selected' @endif>{{$channel->name}}</option>
+          <option value="{{$channel->id}}"  @if($channel->id==$window->channel_id) selected='selected' @endif>{{$channel->name}}</option>
       @endforeach
     </select>
     </div>

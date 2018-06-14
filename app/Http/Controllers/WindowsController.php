@@ -10,6 +10,8 @@ use Redirect;
 use Session;
 use Validator;
 use Input;
+use Carbon\Carbon;
+use Log;
 
 class WindowsController extends Controller
 {
@@ -54,9 +56,14 @@ class WindowsController extends Controller
 
         $rules = array(
              'name'       => 'required|numeric',
-             'init_date'      => 'required|date',
+             'init_date'      => 'required|unique:windows|date',
              'duration' => 'required|size:5'
          );
+        $input =  Input::all();
+        foreach ($input as $key => $value) {
+          // code...
+          Log::debug($value);
+        }
          $validator = Validator::make(Input::all(), $rules);
 
          // process the login
@@ -64,7 +71,18 @@ class WindowsController extends Controller
              return Redirect::to('windows/create')
                  ->withErrors($validator)
                  ->withInput(Input::except('password'));
-         } else {
+         } else if($this->isWindowInitDateOverlaping(Input::get('init_date'))){
+           return Redirect::to('windows/create')
+                  ->withInput()
+                  ->withErrors(array('message' => __('dpi.window_init_date_error')));
+
+         } else if($this->isWindowEndDateOverlaping(Input::get('init_date'),Input::get('duration'))){
+           return Redirect::to('windows/create')
+                  ->withInput()
+                  ->withErrors(array('message' => __('dpi.window_duration_error')));
+
+         } else{
+
              // store
              $window = new Windows;
              $window->channel_id      = Input::get('name');
@@ -163,5 +181,44 @@ class WindowsController extends Controller
         // redirect
         Session::flash('message',  __('dpi.ok_deleted', ['item' => __('dpi.window')]));
         return Redirect::to('windows');
+    }
+
+    private function isWindowInitDateOverlaping($initDate){
+      $windows =  Windows::all();
+      foreach ($windows as $key => $window) {
+        // code...
+        $initDateDB =  Carbon::parse($window->init_date);
+        $durationBD = Carbon::parse($window->duration);
+        $endDateDB = $initDateDB->copy()->addHours($durationBD->hour)->addminutes($durationBD->minute);
+        $initDateNew = Carbon::parse($initDate);
+        $overlap =   $initDateNew->gte($initDateDB) && $initDateNew->lte($endDateDB);
+        Log::debug('Init date : '.$initDateDB.' End Date: '.$endDateDB.' New Date: '.$initDateNew.' Overlap?: '.$overlap);
+        if($overlap){
+          return true;
+        }
+
+      }
+      return false;
+    }
+
+    private function isWindowEndDateOverlaping($initDate, $duration){
+      $windows =  Windows::all();
+      foreach ($windows as $key => $window) {
+        // code...
+        $initDateDB =  Carbon::parse($window->init_date);
+        $durationBD = Carbon::parse($window->duration);
+        $endDateDB = $initDateDB->copy()->addHours($durationBD->hour)->addminutes($durationBD->minute);
+        $initDateNew = Carbon::parse($initDate);
+        $durationNew = Carbon::parse($duration);
+        $endDateNew =  $initDateNew->copy()->addHours($durationNew->hour)->addminutes($durationNew->minute);
+
+        $overlap =   $endDateNew->gte($initDateDB) && $endDateNew->lte($endDateDB);
+        Log::debug('Init date : '.$initDateDB.' End Date: '.$endDateDB.' New End Date: '.$endDateNew.' Overlap?: '.$overlap);
+        if($overlap){
+          return true;
+        }
+
+      }
+      return false;
     }
 }

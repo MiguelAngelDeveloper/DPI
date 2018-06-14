@@ -3,9 +3,9 @@
 
 return [
 'success' => '¡Bien!',
-'ok_created' => ':item creado correctamente.',
-'ok_updated' => ':item modificado correctamente.',
-'ok_deleted' => ':item borrado correctamente.',
+'ok_created' => 'Creación de :item correcta.',
+'ok_updated' => 'Modificación de :item correcta.',
+'ok_deleted' => 'Borrado de :item correcta.',
 'channels' => 'Canales',
 'channel' => 'Canal',
 'channel_name' => 'Nombre del canal',
@@ -21,6 +21,8 @@ return [
 'actions' => 'Acciones',
 'windows' => 'Ventanas',
 'window' => 'Ventana',
+'window_init_date_error' => 'La fecha y hora de inicio entra dentro de la duración de otra ventana ya existente',
+'window_duration_error' => 'La duración de la ventana solapa con el inicio de otra ventana ya existente.',
 'show_window' => 'Visualizando Ventana',
 'updating_window' => 'Modificando Ventana',
 'channel_name' => 'Nombre del Canal',
@@ -72,4 +74,5 @@ return [
 'code0022' => 'Fallo, Colisiñon de Canal',
 'code0023' => 'Fallo, Sin señal en la ventana',
 'search' => 'Buscar',
+'newScheduling' => 'Insertar nueva programación',
 ];

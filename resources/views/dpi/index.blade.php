@@ -186,7 +186,6 @@
       </div>
     </div>
     <!-- Bootstrap core JavaScript-->
-
     <script src={{asset("vendor/jquery/jquery.min.js")}}></script>
     <script src={{asset("vendor/bootstrap/js/bootstrap.bundle.min.js")}}></script>
     <script src={{asset("vendor/bootstrap/js/popper.js")}}></script>
@@ -203,6 +202,7 @@
     <script src={{asset("js/jquery-ui-timepicker-addon.js")}}></script>
     <script src={{asset("js/datepicker-es.js")}}></script>
     <script src={{asset("js/jquery-ui-timepicker-addon-i18n.min.js")}}></script>
+
 
     <!-- Custom scripts for all pages-->
     <script src={{asset("js/sb-admin.min.js")}}></script>
@@ -226,6 +226,12 @@
             step: 1
           });
           */
+
+          $('#sch_init_date').datepicker({
+            dateFormat: 'yy-mm-dd',
+            controlType: 'select',
+            oneLine: true
+          });
           $('#init_date').datetimepicker({
             dateFormat: 'yy-mm-dd',
             timeFormat: 'HH:mm:ss',
@@ -234,6 +240,9 @@
           });
           $('#duration').timepicker();
           $('#duration_ad').timepicker({
+            timeFormat: 'HH:mm:ss'
+          });
+          $('#optimal_inertion_date').timepicker({
             timeFormat: 'HH:mm:ss'
           });
     });

@@ -75,4 +75,5 @@ return [
 'code0023' => 'Failed, No Cue in Window',
 'search' => 'Search',
 'newScheduling' => 'Insert new scheduling',
+'hoi' => 'Scheduled Time',
 ];

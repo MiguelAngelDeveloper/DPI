@@ -75,4 +75,5 @@ return [
 'code0023' => 'Fallo, Sin señal en la ventana',
 'search' => 'Buscar',
 'newScheduling' => 'Insertar nueva programación',
+'hoi' => 'Hora óptima de inserción',
 ];

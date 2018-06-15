@@ -8,8 +8,5 @@ use App\Windows;
 class Breaks extends Model
 {
     //
-   public function ad()
-  {
-      return $this->belongsTo('App\Ads');
-  }
+
 }

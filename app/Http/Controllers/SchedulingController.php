@@ -7,6 +7,9 @@ use View;
 use App\Schedules;
 use App\Channels;
 use App\Windows;
+use App\Breaks;
+use App\SpotInsertion;
+use App\Ads;
 use Input;
 use Redirect;
 use Carbon\Carbon;
@@ -105,6 +108,48 @@ class SchedulingController extends Controller
     $freeWindows = DB::table('windows')->leftjoin('spot_insertion', 'windows.id','=','spot_insertion.window_id')->whereRaw('spot_insertion.id is null')->whereRaw('date(windows.init_date)=?',$initDate)->selectRaw('windows.*')->get();
     $populatedWindows = DB::table('windows')->leftjoin('spot_insertion', 'windows.id','=','spot_insertion.window_id')->whereRaw('spot_insertion.id is not null')->get();
     $channels = Channels::all();
-    return View::make('dpi.scheduling.create', compact('channels'))->with('freeWindows',$freeWindows)->with('populatedWindows',$populatedWindows);
+    $spots = Ads::all();
+    return View::make('dpi.scheduling.create', compact('channels'))->with('spots',$spots)->with('freeWindows',$freeWindows)->with('populatedWindows',$populatedWindows);
+  }
+
+  public function saveBreak(Request $request){
+    //break_position_in_window
+    $optimal_insertion_date =  $request->input('optimal_insertion_date');
+    $windowId = $request->input('windowId');
+    $spots = $request->input('spotSelect');
+    try{
+      DB::beginTransaction();
+      $break = new Breaks;
+      $break->optimal_insertion_date = $optimal_insertion_date;
+      $break->save();
+      $break_position_in_window = DB::table('spot_insertion')->where('window_id', $windowId)->max('break_position_in_window');
+      if($break_position_in_window){
+        $break_position_in_window++;
+      }else{
+        $break_position_in_window = 1;
+      }
+      foreach ($spots as $key => $spot) {
+        $spot_insertion = new SpotInsertion;
+        $spot_insertion->window_id = $windowId;
+        $spot_insertion->break_id = $break->id;
+        $ad_pos_in_break = DB::table('spot_insertion')->where('break_id', $break->id)->max('ad_pos_in_break');
+        if($ad_pos_in_break){
+          $ad_pos_in_break++;
+        }else{
+          $ad_pos_in_break = 1;
+        }
+        $spot_insertion->ad_id = $spot;
+        $spot_insertion->ad_pos_in_break = $ad_pos_in_break;
+        $spot_insertion->break_position_in_window = $break_position_in_window;
+        $spot_insertion->save();
+      }
+      DB::commit();
+      return response()->json(['windowId' => $windowId, 'breakId' => $break->id,'optimal_insertion_date' => $optimal_insertion_date, 'error' => 0]);
+
+    } catch(\Exception $e){
+      DB::rollback();
+      return response()->json(['errormsg' => 'Error al guardar en BBDD el break: '.$e->getMessage(), 'error' => 1]);
+    }
+
   }
 }

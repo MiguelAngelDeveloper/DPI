@@ -10,6 +10,10 @@ class SpotInsertion extends Model
 {
     //
      protected $table = 'spot_insertion';
+     public function ad()
+    {
+        return $this->belongsTo('App\Ads');
+    }
      public function break()
     {
         return $this->belongsTo('App\Breaks');

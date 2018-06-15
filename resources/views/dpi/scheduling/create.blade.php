@@ -37,14 +37,16 @@
 @if(isset($freeWindows) && $freeWindows->isNotEmpty())
   <h5>Ventanas libres</h5>
   @foreach ($freeWindows as $key => $window)
-<div class="mb-2">
+<div class="mb-2" id="window{{$window->id}}">
+  <div>
     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalScheduling{{$window->id}}">
       <p>@lang('dpi.init_date'): {{ $window->init_date }}</p>
       <p>@lang('dpi.duration'): {{ $window->duration }}</p>
     </button>
+  </div>
 </div>
       <!-- Modal -->
-    @include('dpi.scheduling.modal', ['window' => $window])
+    @include('dpi.scheduling.modal', ['window' => $window, 'spots' => $spots])
 
   @endforeach
 @endif

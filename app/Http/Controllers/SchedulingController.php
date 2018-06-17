@@ -137,6 +137,19 @@ class SchedulingController extends Controller
     $optimal_insertion_date =  $request->input('optimal_insertion_date');
     $windowId = $request->input('windowId');
     $spots = $request->input('spotSelect');
+  if(!$optimal_insertion_date){
+      return response()->json(['errormsg' => 'Error: No se ha definido la hora de inserción óptima.', 'error' => 1]);
+  }
+  if(!$spots){
+      return response()->json(['errormsg' => 'Error: No se ha insertado ningún anuncio.', 'error' => 1]);
+  }
+  if(!$this->optimalInsertionDateIsInsideWindow($optimal_insertion_date, $windowId)) {
+    return response()->json(['errormsg' => 'Error: La hora de inserción óptima no está dentro de la ventana.', 'error' => 1]);
+  }
+  if(!$this->spotsFitsInWindow($spots, $windowId)){
+    return response()->json(['errormsg' => 'Error: La duración de todos los anuncios sobrepasa la de la ventana.', 'error' => 1]);
+  }
+
     try{
       DB::beginTransaction();
       $break = new Breaks;
@@ -170,6 +183,14 @@ class SchedulingController extends Controller
       DB::rollback();
       return response()->json(['errormsg' => 'Error al guardar en BBDD el break: '.$e->getMessage(), 'error' => 1]);
     }
-
   }
+
+
+  private function optimalInsertionDateIsInsideWindow($optimal_insertion_date, $windowId){
+    return true;
+  }
+  private function spotsFitsInWindow($spots, $windowId){
+    return true;
+  }
+
 }

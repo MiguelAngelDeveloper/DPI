@@ -105,7 +105,11 @@ class SchedulingController extends Controller
   public function search(Request $request){
     $channelId = Input::get('channel');
     $initDate = Input::get('init_date');
-    $freeWindows = DB::table('windows')->leftjoin('spot_insertion', 'windows.id','=','spot_insertion.window_id')->whereRaw('spot_insertion.id is null')->whereRaw('date(windows.init_date)=?',$initDate)->selectRaw('windows.*')->get();
+    if($initDate){
+      $freeWindows = DB::table('windows')->leftjoin('spot_insertion', 'windows.id','=','spot_insertion.window_id')->whereRaw('spot_insertion.id is null')->whereRaw('date(windows.init_date)=?',$initDate)->selectRaw('windows.*')->get();
+    } else{
+      $freeWindows = DB::table('windows')->leftjoin('spot_insertion', 'windows.id','=','spot_insertion.window_id')->whereRaw('spot_insertion.id is null')->selectRaw('windows.*')->get();
+    }
     $populatedWindows = DB::table('windows')->leftjoin('spot_insertion', 'windows.id','=','spot_insertion.window_id')->whereRaw('spot_insertion.id is not null')->get();
     $channels = Channels::all();
     $spots = Ads::all();

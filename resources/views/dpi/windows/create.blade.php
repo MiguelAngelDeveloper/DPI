@@ -25,7 +25,11 @@
     {{ Form::label('name', 'Nombre del canal') }}
     <select name="name">
       @foreach($channels as $channel)
-          <option value="{{$channel->id}}">{{$channel->name}}</option>
+          <option value="{{$channel->id}}"
+            @if ($channel->id == old('name'))
+                selected="selected"
+            @endif
+            >{{$channel->name}}</option>
       @endforeach
     </select>
     </div>

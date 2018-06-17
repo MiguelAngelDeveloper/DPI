@@ -22,4 +22,5 @@ class SpotInsertion extends Model
    {
        return $this->belongsTo('App\Windows');
    }
+
 }

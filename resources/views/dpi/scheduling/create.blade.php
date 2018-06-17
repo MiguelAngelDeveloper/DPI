@@ -35,7 +35,7 @@
 <button type="submit" class="btn btn-primary mb-2">@lang('dpi.search')</button>
 {{ Form::close() }}
 @if(isset($freeWindows) && $freeWindows->isNotEmpty())
-  <h5>Ventanas libres</h5>
+  <h5>@lang('dpi.freeWindows')</h5>
   @foreach ($freeWindows as $key => $window)
 <div class="mb-2" id="window{{$window->id}}">
   <div>
@@ -51,9 +51,34 @@
   @endforeach
 @endif
 @if(isset($populatedWindows) && $populatedWindows->isNotEmpty())
-  <h5>Ventanas populadas</h5>
-  @foreach ($populatedWindows as $key => $window)
-    <p>{{ $window->init_date }}</p>
-  @endforeach
+  <h5>@lang('dpi.scheduledWindows')</h5>
+  <div class="text-center justify-content-center d-flex">
+    <table class="table table-hover table-responsive table-condensed ">
+        <thead>
+            <tr>
+                <td>@lang('dpi.window_init_date')</td>
+                <td>@lang('dpi.window_duration')</td>
+                <td>@lang('dpi.break_position_in_window')</td>
+                <td>@lang('dpi.hoi')</td>
+                <td>@lang('dpi.ad_pos_in_break')</td>
+                <td>@lang('dpi.ad_name')</td>
+                <td>@lang('dpi.ad_duration')</td>
+            </tr>
+        </thead>
+        <tbody>
+          @foreach ($populatedWindows as $key => $spot_insertion)
+            <tr>
+                <td>{{ $spot_insertion->window->init_date }}</td>
+                <td>{{ $spot_insertion->window->duration }}</td>
+                <td>{{ $spot_insertion->break_position_in_window }}</td>
+                <td>{{ $spot_insertion->break->optimal_insertion_date }}</td>
+                <td>{{ $spot_insertion->ad_pos_in_break }}</td>
+                <td>{{ $spot_insertion->ad->name }}</td>
+                <td>{{ $spot_insertion->ad->duration }}</td>
+            </tr>
+        @endforeach
+        </tbody>
+    </table>
+  </div>
 @endif
 @stop

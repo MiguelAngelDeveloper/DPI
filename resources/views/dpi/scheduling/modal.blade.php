@@ -7,7 +7,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-<form id="modalBreakForm" action="/scheduling/saveBreak" method="POST" autocomplete = "off">
+<form id="modalBreakForm" class="modalBreakForm" action="/scheduling/saveBreak" method="POST" autocomplete = "off">
       <div class="modal-body">
         <div class="container">
           <div>
@@ -25,7 +25,7 @@
             </div>
             <div class="form-group">
               <label for="spotSelect" class="title mr-1">@lang('dpi.ads')</label>
-              <select multiple="multiple" id="spotSelect" name="spotSelect[]">
+              <select multiple="multiple" class="spotSelect" id="spotSelect" name="spotSelect[]">
                 @foreach($spots as $spot)
                     <option value="{{$spot->id}}">{{$spot->name}} [{{ $spot->duration }}]</option>
                 @endforeach

@@ -86,4 +86,6 @@ return [
 'ad_pos_in_break' => 'Posición del anuncio dentro de la ventana',
 'ad_name' => 'Nombre del anuncio',
 'ad_duration' => 'Duración del anuncio',
+'fileGeneration' => 'Generar fichero de programación',
+'getSchedulings' => 'Ver programaciones',
 ];

@@ -86,4 +86,6 @@ return [
 'ad_pos_in_break' => 'Spot Position Within Break',
 'ad_name' => 'Spot Name',
 'ad_duration' => 'Spot Length',
+'fileGeneration' => 'Scheduling File Generation',
+'getSchedulings' => 'Show Schedulings',
 ];

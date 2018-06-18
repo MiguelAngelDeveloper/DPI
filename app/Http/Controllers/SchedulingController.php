@@ -12,6 +12,7 @@ use App\SpotInsertion;
 use App\Ads;
 use Input;
 use Redirect;
+use Session;
 use Carbon\Carbon;
 use Log;
 use DB;
@@ -26,9 +27,8 @@ class SchedulingController extends Controller
   public function index()
   {
     //
-    $schedules = Schedules::all();
-    return View::make('dpi.scheduling.index')
-    ->with('scheduling', $schedules);
+    $channels = Channels::all();
+    return View::make('dpi.scheduling.index', compact('channels'));
   }
 
   /**
@@ -102,33 +102,63 @@ class SchedulingController extends Controller
     //
   }
 
+  public function fileGeneration(Request $request){
+    $schDate = Input::get('schDate');
+    $spotInsertions = SpotInsertion::whereIn('window_id',
+    function($query) use ($schDate){
+        $query->select('id')
+        ->from('windows')
+        ->whereDate('init_date', '=', $schDate);
+      }
+    )->get();
+    foreach ($spotInsertions as $key => $spotInsertion) {
+      // code...
+    }
+    return response()->streamDownload(function () {
+        echo "Test";
+    }, 'laravel-test.txt');
+  }
+
   public function search(Request $request){
+    $screen = Input::get('screen');
     $channelId = Input::get('channel');
     $initDate = Input::get('init_date');
+    Session::flash('channel', $channelId );
     if($initDate){
 
-      $freeWindows = DB::table('windows')->leftjoin('spot_insertion', 'windows.id','=','spot_insertion.window_id')->whereRaw('spot_insertion.id is null')->whereRaw('date(windows.init_date)=?',$initDate)->selectRaw('windows.*')->get();
+      $freeWindows = DB::table('windows')->leftjoin('spot_insertion', 'windows.id','=','spot_insertion.window_id')->whereRaw('spot_insertion.id is null')->whereRaw('date(windows.init_date)=?',$initDate)->where('windows.channel_id', $channelId)->selectRaw('windows.*')->get();
     //  $populatedWindows = DB::table('windows')->leftjoin('spot_insertion', 'windows.id','=','spot_insertion.window_id')->whereRaw('date(windows.init_date)=?',$initDate)->whereRaw('spot_insertion.id is not null')->selectRaw('spot_insertion.*')->get();
     DB::connection()->enableQueryLog();
      $populatedWindows = SpotInsertion::whereIn('window_id',
-     function($query) use ($initDate){
+     function($query) use ($initDate, $channelId){
          $query->select('id')
          ->from('windows')
-         ->whereDate('init_date', '=', $initDate);
+         ->whereDate('init_date', '=', $initDate)
+         ->where('channel_id', $channelId);
        }
      )->get();
+
      $queries = DB::getQueryLog();
      foreach ($queries as $key => $value) {
        // code...
        Log::debug($value);
      }
 
-    } else{
-      $freeWindows = DB::table('windows')->leftjoin('spot_insertion', 'windows.id','=','spot_insertion.window_id')->whereRaw('spot_insertion.id is null')->selectRaw('windows.*')->get();
-      $populatedWindows = SpotInsertion::all();
+    } else {
+      $freeWindows = DB::table('windows')->leftjoin('spot_insertion', 'windows.id','=','spot_insertion.window_id')->whereRaw('spot_insertion.id is null')->where('windows.channel_id', $channelId)->selectRaw('windows.*')->get();
+      $populatedWindows = SpotInsertion::whereIn('window_id',
+      function($query) use ($channelId){
+          $query->select('id')
+          ->from('windows')
+          ->where('channel_id', $channelId);
+        }
+      )->get();;
     }
     $channels = Channels::all();
     $spots = Ads::all();
+    if($screen){
+      return View::make('dpi.scheduling.index', compact('channels'))->with('spots',$spots)->with('populatedWindows',$populatedWindows)->with('schDate',$initDate);
+    }
     return View::make('dpi.scheduling.create', compact('channels'))->with('spots',$spots)->with('freeWindows',$freeWindows)->with('populatedWindows',$populatedWindows);
   }
 

@@ -1,48 +1,75 @@
 @extends('dpi/index')
 @section('content')
   <ol class="breadcrumb">
-    <li class="breadcrumb-item active">
-      <a href="{{ URL::to('scheduling') }}">@lang('dpi.scheduling')</a>
+    <li class="breadcrumb-item">
+      <a href="{{ URL::to('scheling') }}">@lang('dpi.scheduling')</a>
     </li>
+    <li class="breadcrumb-item active">@lang('dpi.getSchedulings')</li>
   </ol>
-<h1>@lang('dpi.scheduling')</h1>
-<?php $message = Session::get('message');?>
-@if($message)
-  <div class="alert alert-success">
-  <strong>Success!</strong> {{  Session::get('message') }}
-  </div>
-@endif
-@if($errors->all())
-  <div class="alert alert-danger">
-  @foreach ($errors->all() as $key => $error)
-    <div>{{$error}}</div>
-  @endforeach
-  </div>
-@endif
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  Launch demo modal
-</button>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
+  <!-- if there are creation errors, they will show here -->
+  @if($errors->all())
+    <div class="alert alert-danger">
+    @foreach ($errors->all() as $key => $error)
+      <div>{{$error}}</div>
+    @endforeach
     </div>
-  </div>
-</div>
+  @endif
+    <h1 class="">@lang('dpi.getSchedulings')</h1>
+{{ Form::open(['url' => 'scheduling/search', 'autocomplete' => 'off', 'class' =>'form-inline']) }}
 
+<div class="form-group mb-2">
+  {{ Form::label('channel', __('dpi.channel_name'), array('class' => 'mr-2')) }}
+<div>
+  <select name="channel">
+    @foreach($channels as $channel)
+        <option value="{{$channel->id}}">{{$channel->name}}</option>
+    @endforeach
+  </select>
+</div>
+</div>
+<div class="form-group mx-sm-3 mb-2">
+  {{ Form::label('init_date', __('dpi.init_date'), array('class' => 'mr-2')) }}
+  {{ Form::text('init_date', null, ['class' => 'form-control', 'id' =>'sch_init_date']) }}
+  {{ Form::hidden('screen', "index", ['class' => 'form-control', 'id' =>'screen']) }}
+</div>
+<button type="submit" class="btn btn-primary mb-2">@lang('dpi.search')</button>
+{{ Form::close() }}
+
+@if(isset($populatedWindows) && $populatedWindows->isNotEmpty())
+  {{ Form::open(['url' => 'scheduling/fileGeneration', 'autocomplete' => 'off', 'class' =>'form-inline mt-3']) }}
+    {{ Form::hidden('schDate', $schDate, ['class' => 'form-control', 'id' =>'schDate']) }}
+  <button type="submit" class="btn btn-warning btn-lg btn-block">@lang('dpi.fileGeneration')</button>
+  {{ Form::close() }}
+  <div class="text-center justify-content-center d-flex">
+    <table class="table table-hover table-responsive table-condensed">
+        <thead class="thead-dark">
+            <tr>
+                <th>@lang('dpi.window_init_date')</th>
+                <th>@lang('dpi.window_duration')</th>
+                <th>@lang('dpi.break_position_in_window')</th>
+                <th>@lang('dpi.hoi')</th>
+                <th>@lang('dpi.ad_pos_in_break')</th>
+                <th>@lang('dpi.ad_name')</th>
+                <th>@lang('dpi.ad_duration')</th>
+            </tr>
+        </thead>
+        <tbody>
+          @foreach ($populatedWindows as $key => $spot_insertion)
+            <tr>
+                <td>{{ $spot_insertion->window->init_date }}</td>
+                <td>{{ $spot_insertion->window->duration }}</td>
+                <td>{{ $spot_insertion->break_position_in_window }}</td>
+                <td>{{ $spot_insertion->break->optimal_insertion_date }}</td>
+                <td>{{ $spot_insertion->ad_pos_in_break }}</td>
+                <td>{{ $spot_insertion->ad->name }}</td>
+                <td>{{ $spot_insertion->ad->duration }}</td>
+            </tr>
+        @endforeach
+        </tbody>
+    </table>
+  </div>
+@else
+  <div class="alert alert-primary">No hay programaciones para la fecha escogida</div>
+@endif
 @stop

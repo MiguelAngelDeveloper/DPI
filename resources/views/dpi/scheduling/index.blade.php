@@ -19,38 +19,30 @@
   @endforeach
   </div>
 @endif
-<div class="container text-center justify-content-center d-flex">
-  <table class="table table-hover table-responsive">
-      <thead>
-          <tr>
-              <td>@lang('dpi.id')</td>
-              <td>@lang('dpi.name')</td>
-              <td>@lang('dpi.code')</td>
-              <td>@lang('dpi.zone')</td>
-              <td>@lang('dpi.actions')</td>
-          </tr>
-      </thead>
-      <tbody>
-      @foreach($scheduling as $key => $value)
-          <tr>
-              <td>{{ $value->id }}</td>
-              <td>{{ $value->name }}</td>
-              <td>{{ $value->code }}</td>
-              <td>{{ $value->zone }}</td>
-              <td>
-                {{ Form::open(array('url' => 'scheduling/' . $value->id, 'class' => 'visible-lg-inline')) }}
-                    {{ Form::hidden('_method', 'DELETE') }}
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Launch demo modal
+</button>
 
-                  <a class="btn btn-small btn-info" data-toggle="tooltip"  title="@lang('dpi.view')" href="{{ URL::to('scheduling/' . $value->id) }}"><i class="fa fa-eye"></i></a>
-                  <a class="btn btn-small btn-info"  data-toggle="tooltip"  title="@lang('dpi.update')" href="{{ URL::to('scheduling/' . $value->id . '/edit') }}"><i class="fa fa-edit"></i></a>
-                  <button type="submit" class="btn btn-info"  data-toggle="tooltip"  title="@lang('dpi.remove')">
-                    <i class="fa fa-trash"></i>
-                  </button>
-                  {{ Form::close() }}
-              </td>
-          </tr>
-      @endforeach
-      </tbody>
-  </table>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
 </div>
+
 @stop

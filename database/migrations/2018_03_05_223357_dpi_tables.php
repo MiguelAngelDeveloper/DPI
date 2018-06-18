@@ -29,10 +29,10 @@ class DpiTables extends Migration
             $table->charset = 'utf8';
             $table->collation = 'utf8_unicode_ci';
             $table->increments('id');
-            $table->string('name',20);
-            $table->String('duration',5);
+            $table->string('name',20)->unique();
+            $table->String('duration',8);
             $table->string('tipo',100);
-            $table->string('code',11);
+            $table->string('code',11)->unique();
             $table->string('announcer',32);
             $table->timestamps();
         });
@@ -45,17 +45,16 @@ class DpiTables extends Migration
             $table->integer('channel_id')->unsigned();
             $table->string('duration',5);
             $table->timestamps();
-            $table->foreign('channel_id')->references('id')->on('channels');
+            $table->foreign('channel_id')->references('id')->on('channels')->onDelete('cascade');
         });
         Schema::create('breaks', function (Blueprint $table){
           $table->engine = 'InnoDB';
           $table->charset = 'utf8';
           $table->collation = 'utf8_unicode_ci';
           $table->increments('id');
-          $table->integer('ad_id')->unsigned();
-          $table->integer('ad_pos_in_break')->unsigned();
+          $table->string('optimal_insertion_date',8);
           $table->timestamps();
-          $table->foreign('ad_id')->references('id')->on('ads');
+
         });
         Schema::create('spot_insertion', function (Blueprint $table){
           $table->engine = 'InnoDB';
@@ -65,10 +64,13 @@ class DpiTables extends Migration
           $table->integer('window_id')->unsigned();
           $table->integer('break_id')->unsigned();
           $table->integer('break_position_in_window')->unsigned();
-          $table->string('optimal_insertion_time',8);
+          $table->integer('ad_id')->unsigned()->nullable();
+          $table->integer('ad_pos_in_break')->unsigned()->nullable();
           $table->timestamps();
-          $table->foreign('break_id')->references('id')->on('breaks');
-          $table->foreign('window_id')->references('id')->on('windows');
+          $table->foreign('ad_id')->references('id')->on('ads')->onDelete('cascade');
+          $table->foreign('break_id')->references('id')->on('breaks')->onDelete('cascade');
+          $table->foreign('window_id')->references('id')->on('windows')->onDelete('cascade');
+
         });
 
     }

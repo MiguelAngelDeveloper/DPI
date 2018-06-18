@@ -44,6 +44,7 @@
   <!-- Custom styles for this template-->
  <link href={{asset('css/sb-admin.css')}} rel="stylesheet">
 <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+<link href="{{ asset('js/multi/css/multi-select.css') }}" rel="stylesheet">
 </head>
 
 <body class="bg-dark fixed-nav sticky-footer" id="page-top">
@@ -186,7 +187,6 @@
       </div>
     </div>
     <!-- Bootstrap core JavaScript-->
-
     <script src={{asset("vendor/jquery/jquery.min.js")}}></script>
     <script src={{asset("vendor/bootstrap/js/bootstrap.bundle.min.js")}}></script>
     <script src={{asset("vendor/bootstrap/js/popper.js")}}></script>
@@ -204,11 +204,12 @@
     <script src={{asset("js/datepicker-es.js")}}></script>
     <script src={{asset("js/jquery-ui-timepicker-addon-i18n.min.js")}}></script>
 
+
     <!-- Custom scripts for all pages-->
     <script src={{asset("js/sb-admin.min.js")}}></script>
     <!-- Custom scripts for this page-->
     <script src={{asset("js/sb-admin-datatables.min.js")}}></script>
-
+    <script src={{asset("js/multi/js/jquery.multi-select.js")}}></script>
     <script type="text/javascript">
     $(document).ready(function(){
       //  $('[data-toggle=tooltip]').tooltip();
@@ -226,6 +227,52 @@
             step: 1
           });
           */
+          /* attach a submit handler to the form */
+          $('#spotSelect').multiSelect();
+         $("#modalBreakForm").submit(function(event) {
+
+             /* stop form from submitting normally */
+             event.preventDefault();
+             $.ajaxSetup({
+                 headers: {
+                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                 }
+             });
+            url = $("#modalBreakForm").attr('action');
+            windowId = $("#modalBreakForm").find('input[name="windowId"]').val();
+            optimal_date = $("#modalBreakForm").find('input[name="optimal_insertion_date"]').val();
+            spotSelect = $("#modalBreakForm").find('select[name="spotSelect[]"]').val();
+            data = { optimal_insertion_date: optimal_date, windowId: windowId , spotSelect: spotSelect }
+             $.ajax({
+               type: "POST",
+               dataType: "json",
+               url : url,
+               //here we set the data for the post based in our form
+               data :  data,
+               success:function(data){
+
+                   if(data.error === 0 ){ // all was ok
+                     newBreak = "<div id=\"break"+data.breakId+"\"><button type=\"button\" class=\"btn btn-primary\">"
+                     +"<p>Break Id: "+data.breakId + "</p>"
+                     +"<p>Window Id: "+data.windowId + "</p>"
+                     +"<p>Optimal Insertion Date: "+data.optimal_insertion_date+"</p>"
+                     +"</button></div>"
+                     $( "#window"+data.windowId ).append(newBreak);
+                     $('#modalScheduling'+data.windowId).modal('hide');
+                   }else{
+                       alert('ERROR:'+data.errormsg);
+                   }
+               },
+               timeout:10000
+           });
+
+         });
+
+          $('#sch_init_date').datepicker({
+            dateFormat: 'yy-mm-dd',
+            controlType: 'select',
+            oneLine: true
+          });
           $('#init_date').datetimepicker({
             dateFormat: 'yy-mm-dd',
             timeFormat: 'HH:mm:ss',
@@ -234,6 +281,9 @@
           });
           $('#duration').timepicker();
           $('#duration_ad').timepicker({
+            timeFormat: 'HH:mm:ss'
+          });
+          $('#optimal_inertion_date').timepicker({
             timeFormat: 'HH:mm:ss'
           });
     });

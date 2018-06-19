@@ -6,7 +6,7 @@
     </li>
     <li class="breadcrumb-item active">@lang('dpi.newScheduling')</li>
   </ol>
-
+<?php $channelId = Session::get('channel');?>
   <!-- if there are creation errors, they will show here -->
   @if($errors->all())
     <div class="alert alert-danger">
@@ -23,7 +23,11 @@
 <div>
   <select name="channel">
     @foreach($channels as $channel)
-        <option value="{{$channel->id}}">{{$channel->name}}</option>
+      <option value="{{$channel->id}}"
+            @if ($channel->id == $channelId)
+                selected="selected"
+            @endif
+            >{{$channel->name}}</option>
     @endforeach
   </select>
 </div>

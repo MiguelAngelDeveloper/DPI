@@ -228,8 +228,8 @@
           });
           */
           /* attach a submit handler to the form */
-          $('#spotSelect').multiSelect();
-         $("#modalBreakForm").submit(function(event) {
+          $('.spotSelect').multiSelect();
+         $(".modalBreakForm").submit(function(event) {
 
              /* stop form from submitting normally */
              event.preventDefault();

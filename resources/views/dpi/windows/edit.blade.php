@@ -4,7 +4,7 @@
     <li class="breadcrumb-item">
       <a href="{{ URL::to('windows') }}">@lang('dpi.windows')</a>
     </li>
-    <li class="breadcrumb-item active">@lang('dpi.updating_break'): {{ $break->id }}</li>
+    <li class="breadcrumb-item active">@lang('dpi.updating_window'): {{ $window->id }}</li>
   </ol>
 
 <div class="text-center justify-content-center d-flex container">

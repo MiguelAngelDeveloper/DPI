@@ -28,7 +28,7 @@
                 selected="selected"
             @endif
             >{{$channel->name}}</option>
-  @endforeach
+    @endforeach
   </select>
 </div>
 </div>

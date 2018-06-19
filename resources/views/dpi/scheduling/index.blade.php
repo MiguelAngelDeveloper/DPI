@@ -6,7 +6,10 @@
     </li>
     <li class="breadcrumb-item active">@lang('dpi.getSchedulings')</li>
   </ol>
-
+<?php
+$channelId = Session::get('channel');
+$schDate = Session::get('schDate');
+?>
   <!-- if there are creation errors, they will show here -->
   @if($errors->all())
     <div class="alert alert-danger">
@@ -23,7 +26,11 @@
 <div>
   <select name="channel">
     @foreach($channels as $channel)
-        <option value="{{$channel->id}}">{{$channel->name}}</option>
+      <option value="{{$channel->id}}"
+            @if ($channel->id == $channelId)
+                selected="selected"
+            @endif
+            >{{$channel->name}}</option>
     @endforeach
   </select>
 </div>
@@ -39,6 +46,7 @@
 @if(isset($populatedWindows) && $populatedWindows->isNotEmpty())
   {{ Form::open(['url' => 'scheduling/fileGeneration', 'autocomplete' => 'off', 'class' =>'form-inline mt-3']) }}
     {{ Form::hidden('schDate', $schDate, ['class' => 'form-control', 'id' =>'schDate']) }}
+    {{ Form::hidden('channelId', $channelId, ['class' => 'form-control', 'id' =>'channelId']) }}
   <button type="submit" class="btn btn-warning btn-lg btn-block">@lang('dpi.fileGeneration')</button>
   {{ Form::close() }}
   <div class="text-center justify-content-center d-flex">

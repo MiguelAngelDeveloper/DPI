@@ -16,6 +16,7 @@ use Session;
 use Carbon\Carbon;
 use Log;
 use DB;
+use App\Http\Helpers;
 
 class SchedulingController extends Controller
 {
@@ -104,19 +105,45 @@ class SchedulingController extends Controller
 
   public function fileGeneration(Request $request){
     $schDate = Input::get('schDate');
+    $channelId = Input::get('channelId');
     $spotInsertions = SpotInsertion::whereIn('window_id',
-    function($query) use ($schDate){
+    function($query) use ($schDate, $channelId){
         $query->select('id')
         ->from('windows')
-        ->whereDate('init_date', '=', $schDate);
+        ->whereDate('init_date', '=', $schDate)
+        ->where('channel_id',$channelId);
       }
     )->get();
+
+    $content = '';
     foreach ($spotInsertions as $key => $spotInsertion) {
       // code...
+      $eventType = 'LOI';
+      $scheduledDate = Carbon::parse($spotInsertion->window->init_date)->format('md');
+      $scheduledTime = Carbon::parse($spotInsertion->break->optimal_insertion_date)->format('his');
+      $windowStartTime = Carbon::parse($spotInsertion->window->init_date)->format('hi');
+      $windowDuration = Carbon::parse($spotInsertion->window->duration)->format('hi');
+      $breakNumberWithinWindow = Helpers::addZerosPreffix($spotInsertion->break_position_in_window,3);
+      $spotPosition = Helpers::addZerosPreffix($spotInsertion->ad_pos_in_break,3);
+      $spotLength = Carbon::parse($spotInsertion->ad->duration)->format('his');
+      $zeroFilled1 = '000000 00000000 000';
+      $spotId = Helpers::addZerosPreffix($spotInsertion->ad->code,11);
+      $zeroFilled2 = '0000';
+      $advertiserName = Helpers::addSpacesSuffix($spotInsertion->ad->announcer, 32);
+      $spotName = Helpers::addSpacesSuffix($spotInsertion->ad->name, 20);
+      Log::debug($spotInsertion->ad->name.': '.iconv_strlen($spotInsertion->ad->name));
+      Log::debug($spotName.': '.iconv_strlen($spotName));
+      $comment = 'Fill';
+      $content.= $eventType.' '.$scheduledDate.' '.$scheduledTime
+      .' '.$windowStartTime.' '.$windowDuration.' '.$breakNumberWithinWindow
+      .' '.$spotPosition.' '.$spotLength.' '.$zeroFilled1.' '.$spotId.' '.$zeroFilled2
+      .' '.$advertiserName.' '.$spotName.' '.$comment."\r\n";
     }
-    return response()->streamDownload(function () {
-        echo "Test";
-    }, 'laravel-test.txt');
+    $content.="END\r\n";
+    $channel = Channels::find($channelId);
+    return response()->streamDownload(function () use ($content){
+        echo $content;
+    }, Helpers::getSchFilename($schDate, $channel->code, $channel->zone));
   }
 
   public function search(Request $request){
@@ -124,6 +151,7 @@ class SchedulingController extends Controller
     $channelId = Input::get('channel');
     $initDate = Input::get('init_date');
     Session::flash('channel', $channelId );
+    Session::flash('schDate', $initDate);
     if($initDate){
 
       $freeWindows = DB::table('windows')->leftjoin('spot_insertion', 'windows.id','=','spot_insertion.window_id')->whereRaw('spot_insertion.id is null')->whereRaw('date(windows.init_date)=?',$initDate)->where('windows.channel_id', $channelId)->selectRaw('windows.*')->get();
@@ -157,7 +185,7 @@ class SchedulingController extends Controller
     $channels = Channels::all();
     $spots = Ads::all();
     if($screen){
-      return View::make('dpi.scheduling.index', compact('channels'))->with('spots',$spots)->with('populatedWindows',$populatedWindows)->with('schDate',$initDate);
+      return View::make('dpi.scheduling.index', compact('channels'))->with('spots',$spots)->with('populatedWindows',$populatedWindows);
     }
     return View::make('dpi.scheduling.create', compact('channels'))->with('spots',$spots)->with('freeWindows',$freeWindows)->with('populatedWindows',$populatedWindows);
   }

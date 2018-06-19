@@ -12,9 +12,17 @@ class Helpers {
   */
 
   public static function addZerosPreffix($data, $maxCharNum){
-    $zerosToAdd = $maxCharNum-strlen($data);
+    $zerosToAdd = $maxCharNum-iconv_strlen($data);
     for($i = 0; $i < $zerosToAdd; $i++){
       $data = '0'.$data;
+    }
+    return $data;
+  }
+
+  public static function addSpacesSuffix($data, $maxCharNum){
+    $zerosToAdd = $maxCharNum-iconv_strlen($data);
+    for($i = 0; $i < $zerosToAdd; $i++){
+      $data = $data.' ';
     }
     return $data;
   }
@@ -36,8 +44,8 @@ class Helpers {
   }
   public static function getSchFilename($date, $network, $zone){
     $dateParsed = Carbon::parse($date);
-    $month = $this->getMonthFromVerFilename($dateParsed->month);
-    $day = $this->addZerosPreffix($dateParsed->day, 2);
+    $month = Helpers::getMonthFromVerFilename($dateParsed->month);
+    $day = Helpers::addZerosPreffix($dateParsed->day, 2);
     return $month.$day.$network.$zone.'.SCH';
   }
   public static function getVerFileStatusCode($status){

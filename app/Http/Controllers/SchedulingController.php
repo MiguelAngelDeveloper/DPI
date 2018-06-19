@@ -245,10 +245,27 @@ class SchedulingController extends Controller
 
 
   private function optimalInsertionDateIsInsideWindow($optimal_insertion_date, $windowId){
-    return true;
+    $window = Windows::find($windowId);
+    $optimal_insertion_date_pr = Carbon::parse($optimal_insertion_date);
+    $initDateDB =  Carbon::parse($window->init_date);
+    $durationBD = Carbon::parse($window->duration);
+    $endDateDB = $initDateDB->copy()->addHours($durationBD->hour)->addminutes($durationBD->minute);
+    $endDateOid = $initDateDB->copy()->addHours($optimal_insertion_date_pr->hour)->addminutes($optimal_insertion_date_pr->minute)->addSeconds($optimal_insertion_date_pr->second);
+    return  $endDateOid->gte($initDateDB) && $endDateOid->lte($endDateDB);
   }
+
   private function spotsFitsInWindow($spots, $windowId){
-    return true;
+
+    $window = Windows::find($windowId);
+    $initDateDB =  Carbon::parse($window->init_date);
+    $durationBD = Carbon::parse($window->duration);
+    $endDateDB = $initDateDB->copy()->addHours($durationBD->hour)->addminutes($durationBD->minute);
+    $sumSpotsDuration = Carbon::parse($initDateDB);
+    foreach ($spots as $key => $spot) {
+      $spot_pr = Carbon::parse($spot->duration);
+      $sumSpotsDuration->addHours($spot_pr->hour)->addminutes($spot_pr->minute)->addSeconds($spot_pr->second);
+    }
+    return  $sumSpotsDuration->gte($initDateDB) && $sumSpotsDuration->lte($endDateDB);
   }
 
 }

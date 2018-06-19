@@ -262,7 +262,8 @@ class SchedulingController extends Controller
     $endDateDB = $initDateDB->copy()->addHours($durationBD->hour)->addminutes($durationBD->minute);
     $sumSpotsDuration = Carbon::parse($initDateDB);
     foreach ($spots as $key => $spot) {
-      $spot_pr = Carbon::parse($spot->duration);
+      $spotDB = Ads::find($spot);
+      $spot_pr = Carbon::parse($spotDB->duration);
       $sumSpotsDuration->addHours($spot_pr->hour)->addminutes($spot_pr->minute)->addSeconds($spot_pr->second);
     }
     return  $sumSpotsDuration->gte($initDateDB) && $sumSpotsDuration->lte($endDateDB);

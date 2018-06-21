@@ -22,7 +22,7 @@ class AdsTableSeeder extends Seeder
         DB::table('ads')->insert([
         'name' => 'Anuncio Coca Cola',
         'duration' => '00:00:20',
-        'tipo' => 'Sch',
+        'tipo' => 'Scheduled',
         'code' => '6546546545',
         'announcer' => 'Coca Cola',
         ]);

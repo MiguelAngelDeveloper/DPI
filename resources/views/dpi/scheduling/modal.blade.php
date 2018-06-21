@@ -7,7 +7,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-<form id="modalBreakForm" class="modalBreakForm" action="/scheduling/saveBreak" method="POST" autocomplete = "off">
+<form id="modalBreakForm" class="modalBreakForm" action="{{ URL::to('/scheduling/saveBreak') }}" method="POST" autocomplete = "off">
       <div class="modal-body">
         <div class="container">
           <div>

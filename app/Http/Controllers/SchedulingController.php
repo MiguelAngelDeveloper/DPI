@@ -201,11 +201,9 @@ class SchedulingController extends Controller
   if(!$spots){
       return response()->json(['errormsg' => 'Error: No se ha insertado ningún anuncio.', 'error' => 1]);
   }
-  if(!$this->optimalInsertionDateIsInsideWindow($optimal_insertion_date, $windowId)) {
-    return response()->json(['errormsg' => 'Error: La hora de inserción óptima no está dentro de la ventana.', 'error' => 1]);
-  }
-  if(!$this->spotsFitsInWindow($spots, $windowId)){
-    return response()->json(['errormsg' => 'Error: La duración de todos los anuncios sobrepasa la de la ventana.', 'error' => 1]);
+
+  if(!$this->spotsFitsInWindow($optimal_insertion_date, $spots, $windowId)){
+    return response()->json(['errormsg' => 'Error: La duración de todos los anuncios a partir de la hora de inserción óptima sobrepasa la de la ventana.', 'error' => 1]);
   }
 
     try{
@@ -243,24 +241,14 @@ class SchedulingController extends Controller
     }
   }
 
+  private function spotsFitsInWindow($optimal_insertion_date, $spots, $windowId){
 
-  private function optimalInsertionDateIsInsideWindow($optimal_insertion_date, $windowId){
     $window = Windows::find($windowId);
+    $initDateDB =  Carbon::parse($window->init_date);
+    $durationBD = Carbon::parse($window->duration);
     $optimal_insertion_date_pr = Carbon::parse($optimal_insertion_date);
-    $initDateDB =  Carbon::parse($window->init_date);
-    $durationBD = Carbon::parse($window->duration);
     $endDateDB = $initDateDB->copy()->addHours($durationBD->hour)->addminutes($durationBD->minute);
-    $endDateOid = $initDateDB->copy()->addHours($optimal_insertion_date_pr->hour)->addminutes($optimal_insertion_date_pr->minute)->addSeconds($optimal_insertion_date_pr->second);
-    return  $endDateOid->gte($initDateDB) && $endDateOid->lte($endDateDB);
-  }
-
-  private function spotsFitsInWindow($spots, $windowId){
-
-    $window = Windows::find($windowId);
-    $initDateDB =  Carbon::parse($window->init_date);
-    $durationBD = Carbon::parse($window->duration);
-    $endDateDB = $initDateDB->copy()->addHours($durationBD->hour)->addminutes($durationBD->minute);
-    $sumSpotsDuration = Carbon::parse($initDateDB);
+    $sumSpotsDuration = $initDateDB->copy()->startOfDay()->addHours($optimal_insertion_date_pr->hour)->addminutes($optimal_insertion_date_pr->minute)->addSeconds($optimal_insertion_date_pr->second);
     foreach ($spots as $key => $spot) {
       $spotDB = Ads::find($spot);
       $spot_pr = Carbon::parse($spotDB->duration);

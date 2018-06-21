@@ -133,7 +133,7 @@ class SchedulingController extends Controller
       $spotName = Helpers::addSpacesSuffix($spotInsertion->ad->name, 20);
       Log::debug($spotInsertion->ad->name.': '.iconv_strlen($spotInsertion->ad->name));
       Log::debug($spotName.': '.iconv_strlen($spotName));
-      $comment = 'Fill';
+      $comment = $spotInsertion->ad->tipo;
       $content.= $eventType.' '.$scheduledDate.' '.$scheduledTime
       .' '.$windowStartTime.' '.$windowDuration.' '.$breakNumberWithinWindow
       .' '.$spotPosition.' '.$spotLength.' '.$zeroFilled1.' '.$spotId.' '.$zeroFilled2

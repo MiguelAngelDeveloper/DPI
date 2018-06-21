@@ -32,7 +32,7 @@
        </div>
        <div class="col">
       {{ Form::label('tipo',__('dpi.type')) }}
-      {{ Form::text('tipo', null, ['class' => 'form-control',  'maxlength' => 100]) }}
+      {{ Form::select('tipo', ['Sch' => 'Sch', 'Fill' => 'Fill'] ,null, ['class' => 'form-control'] ) }}
       </div>
     </div>
   </div>

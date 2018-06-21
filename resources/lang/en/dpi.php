@@ -88,4 +88,5 @@ return [
 'ad_duration' => 'Spot Length',
 'fileGeneration' => 'Scheduling File Generation',
 'getSchedulings' => 'Show Schedulings',
+'event_type' => 'Event Type',
 ];

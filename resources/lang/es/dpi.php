@@ -88,4 +88,5 @@ return [
 'ad_duration' => 'Duración del anuncio',
 'fileGeneration' => 'Generar fichero de programación',
 'getSchedulings' => 'Ver programaciones',
+'event_type' => 'Tipo de evento',
 ];

@@ -19,7 +19,7 @@ $(document).ready(function(){
      $(".modalBreakForm").submit(function(event) {
 
          /* stop form from submitting normally */
-         console.log(event.target);
+         const formData = new FormData(event.target);
          event.preventDefault();
          $.ajaxSetup({
              headers: {
@@ -27,11 +27,9 @@ $(document).ready(function(){
              }
          });
         url = $(".modalBreakForm").attr('action');
-        windowId = $(".modalBreakForm").find('input[name="windowId"]').val();
-        event_type = $(".modalBreakForm").find('select[name="event_type"]').val();
-        optimal_date = $(".modalBreakForm").find('input[name="optimal_insertion_date"]').val();
-        spotSelect = $(".modalBreakForm").find('select[name="spotSelect[]"]').val();
-        data = { optimal_insertion_date: optimal_date, windowId: windowId , spotSelect: spotSelect, event_type: event_type }
+        windowId = formData.get('windowId');
+        data = $('#modalBreakForm'+windowId).serializeArray();
+        console.log(data);
          $.ajax({
            type: "POST",
            dataType: "json",

@@ -7,7 +7,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-<form id="modalBreakForm" class="modalBreakForm" action="{{ URL::to('/scheduling/saveBreak') }}" method="POST" autocomplete = "off">
+<form id="modalBreakForm{{$window->id}}" class="modalBreakForm" action="{{ URL::to('scheduling') }}" method="POST" autocomplete = "off">
       <div class="modal-body">
         <div class="container">
           <div>
@@ -28,8 +28,8 @@
                 </select>
               </div>
               <div>
-                <label for="optimal_inertion_date" class="title mr-1">@lang('dpi.hoi')</label>
-                <input type=text name='optimal_insertion_date' id="optimal_inertion_date">
+                <label for="optimal_insertion_date" class="title mr-1">@lang('dpi.hoi')</label>
+                <input type=text name='optimal_insertion_date' class="optimal_insertion_date">
                 <input type=hidden name="windowId" value={{$window->id}}>
               </div>
             </div>

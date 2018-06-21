@@ -16,7 +16,7 @@
     </div>
   @endif
     <h1 class="">@lang('dpi.newScheduling')</h1>
-{{ Form::open(['url' => 'scheduling/search', 'autocomplete' => 'off', 'class' =>'form-inline']) }}
+{{ Form::open(['url' => 'scheduling/search', 'method' => 'GET', 'autocomplete' => 'off', 'class' =>'form-inline']) }}
 
 <div class="form-group mb-2">
   {{ Form::label('channel', __('dpi.channel_name'), array('class' => 'mr-2')) }}

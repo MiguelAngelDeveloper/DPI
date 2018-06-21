@@ -118,7 +118,7 @@ class SchedulingController extends Controller
     $content = '';
     foreach ($spotInsertions as $key => $spotInsertion) {
       // code...
-      $eventType = 'LOI';
+      $eventType = $spotInsertion->event_type;
       $scheduledDate = Carbon::parse($spotInsertion->window->init_date)->format('md');
       $scheduledTime = Carbon::parse($spotInsertion->break->optimal_insertion_date)->format('his');
       $windowStartTime = Carbon::parse($spotInsertion->window->init_date)->format('hi');
@@ -195,6 +195,8 @@ class SchedulingController extends Controller
     $optimal_insertion_date =  $request->input('optimal_insertion_date');
     $windowId = $request->input('windowId');
     $spots = $request->input('spotSelect');
+    $event_type = $request->input('event_type');
+
   if(!$optimal_insertion_date){
       return response()->json(['errormsg' => 'Error: No se ha definido la hora de inserción óptima.', 'error' => 1]);
   }
@@ -230,6 +232,7 @@ class SchedulingController extends Controller
         $spot_insertion->ad_id = $spot;
         $spot_insertion->ad_pos_in_break = $ad_pos_in_break;
         $spot_insertion->break_position_in_window = $break_position_in_window;
+        $spot_insertion->event_type = $event_type;
         $spot_insertion->save();
       }
       DB::commit();
@@ -244,7 +247,7 @@ class SchedulingController extends Controller
   private function spotsFitsInWindow($optimal_insertion_date, $spots, $windowId){
 
     $window = Windows::find($windowId);
-    $initDateDB =  Carbon::parse($window->init_date);
+    $initDateDB = Carbon::parse($window->init_date);
     $durationBD = Carbon::parse($window->duration);
     $optimal_insertion_date_pr = Carbon::parse($optimal_insertion_date);
     $endDateDB = $initDateDB->copy()->addHours($durationBD->hour)->addminutes($durationBD->minute);
@@ -254,7 +257,8 @@ class SchedulingController extends Controller
       $spot_pr = Carbon::parse($spotDB->duration);
       $sumSpotsDuration->addHours($spot_pr->hour)->addminutes($spot_pr->minute)->addSeconds($spot_pr->second);
     }
-    return  $sumSpotsDuration->gte($initDateDB) && $sumSpotsDuration->lte($endDateDB);
+    return $sumSpotsDuration->gte($initDateDB) && $sumSpotsDuration->lte($endDateDB);
   }
+
 
 }

@@ -240,9 +240,10 @@
              });
             url = $("#modalBreakForm").attr('action');
             windowId = $("#modalBreakForm").find('input[name="windowId"]').val();
+            event_type = $("#modalBreakForm").find('select[name="event_type"]').val();
             optimal_date = $("#modalBreakForm").find('input[name="optimal_insertion_date"]').val();
             spotSelect = $("#modalBreakForm").find('select[name="spotSelect[]"]').val();
-            data = { optimal_insertion_date: optimal_date, windowId: windowId , spotSelect: spotSelect }
+            data = { optimal_insertion_date: optimal_date, windowId: windowId , spotSelect: spotSelect, event_type: event_type }
              $.ajax({
                type: "POST",
                dataType: "json",

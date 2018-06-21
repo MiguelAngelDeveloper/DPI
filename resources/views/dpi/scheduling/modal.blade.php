@@ -22,6 +22,12 @@
               <label for="optimal_inertion_date" class="title mr-1">@lang('dpi.hoi')</label>
               <input type=text name='optimal_insertion_date' id="optimal_inertion_date">
               <input type=hidden name="windowId" value={{$window->id}}>
+              <label for="insertion_type" class="title mr-1">@lang('dpi.insertion_type')</label>
+              <select name="event_type" id="event_type">
+                <option value="LOI">LOI</option>
+                <option value="REM">REM</option>
+                <option value="NUL">NUL</option>
+              </select>
             </div>
             <div class="form-group">
               <label for="spotSelect" class="title mr-1">@lang('dpi.ads')</label>

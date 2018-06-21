@@ -66,6 +66,7 @@ class DpiTables extends Migration
           $table->integer('break_position_in_window')->unsigned();
           $table->integer('ad_id')->unsigned()->nullable();
           $table->integer('ad_pos_in_break')->unsigned()->nullable();
+          $table->string('event_type',3);
           $table->timestamps();
           $table->foreign('ad_id')->references('id')->on('ads')->onDelete('cascade');
           $table->foreign('break_id')->references('id')->on('breaks')->onDelete('cascade');

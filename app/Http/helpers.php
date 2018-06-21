@@ -26,7 +26,7 @@ class Helpers {
     }
     return $data;
   }
-  public static function getMonthFromVerFilename($month){
+  public static function getMonthCCMSStyle($month){
     switch ($month) {
       case 'A':
       return '10';
@@ -44,7 +44,7 @@ class Helpers {
   }
   public static function getSchFilename($date, $network, $zone){
     $dateParsed = Carbon::parse($date);
-    $month = Helpers::getMonthFromVerFilename($dateParsed->month);
+    $month = Helpers::getMonthCCMSStyle($dateParsed->month);
     $day = Helpers::addZerosPreffix($dateParsed->day, 2);
     return $month.$day.$network.$zone.'.SCH';
   }

@@ -37,14 +37,29 @@ $(document).ready(function(){
            //here we set the data for the post based in our form
            data :  data,
            success:function(data){
-
                if(data.error === 0 ){ // all was ok
+                 var newBreak = $("<li>");
+                 newBreak.attr("id", "break"+data.breakId);
+                 newBreak.addClass("list-group-item");
+                 var innerDiv = $("<div>");
+                 var p1 = $("<p>");
+                 p1.text("Break Id: "+data.breakId);
+                 var p2 = $("<p>");
+                 p2.text("Window Id: "+data.windowId);
+                 var p3 = $("<p>");
+                 p3.text("Optimal Insertion Date: "+data.optimal_insertion_date);
+                 innerDiv.append(p1);
+                 innerDiv.append(p2);
+                 innerDiv.append(p3);
+                 newBreak.append(innerDiv);
+/*
                  newBreak = "<div id=\"break"+data.breakId+"\"><button type=\"button\" class=\"btn btn-primary\">"
                  +"<p>Break Id: "+data.breakId + "</p>"
                  +"<p>Window Id: "+data.windowId + "</p>"
                  +"<p>Optimal Insertion Date: "+data.optimal_insertion_date+"</p>"
                  +"</button></div>"
-                 $( "#window"+data.windowId ).append(newBreak);
+                 */
+                 $( "#breaksw"+data.windowId+">ul" ).append(newBreak);
                  $('#modalScheduling'+data.windowId).modal('hide');
                }else{
                    alert('ERROR:'+data.errormsg);

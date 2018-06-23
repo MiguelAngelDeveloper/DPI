@@ -1,5 +1,13 @@
 @extends('dpi/index')
 @section('content')
+  <style>
+.break-collapse:hover {
+  text-decoration: none;
+}
+.break-collapse:link {
+  color: black;
+}
+  </style>
   <ol class="breadcrumb">
     <li class="breadcrumb-item">
       <a href="{{ URL::to('scheling') }}">@lang('dpi.scheduling')</a>
@@ -16,7 +24,7 @@
     </div>
   @endif
     <h1 class="">@lang('dpi.newScheduling')</h1>
-{{ Form::open(['url' => 'scheduling/search', 'method' => 'GET', 'autocomplete' => 'off', 'class' =>'form-inline']) }}
+{{ Form::open(['url' => 'scheduling/search', 'method' => 'POST', 'autocomplete' => 'off', 'class' =>'form-inline']) }}
 
 <div class="form-group mb-2">
   {{ Form::label('channel', __('dpi.channel_name'), array('class' => 'mr-2')) }}
@@ -41,14 +49,24 @@
 @if(isset($freeWindows) && $freeWindows->isNotEmpty())
   <h5>@lang('dpi.freeWindows')</h5>
   @foreach ($freeWindows as $key => $window)
-<div class="mb-2" id="window{{$window->id}}">
-  <div>
-    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalScheduling{{$window->id}}">
-      <p>@lang('dpi.init_date'): {{ $window->init_date }}</p>
-      <p>@lang('dpi.duration'): {{ $window->duration }}</p>
-    </button>
-  </div>
-</div>
+      <div class="card d-flex flex-wrap w-50" id="window{{$window->id}}">
+        <div class="card-header">
+          <a class="break-collapse collapsed ml-3" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="breaksw{{$window->id}}" href="#breaksw{{$window->id}}">
+          <span>@lang('dpi.init_date'): {{ $window->init_date }}</span>
+          <span>@lang('dpi.duration'): {{ $window->duration }}</span>
+          </a>
+          <span class="pull-right">
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalScheduling{{$window->id}}">
+              @lang('dpi.insertNewBreak')
+            </button>
+          </span>
+        </div>
+        <div class="collapse" id="breaksw{{$window->id}}">
+        <ul class="list-group list-group-flush collapse">
+        </ul>
+      </div>
+    </div>
+
       <!-- Modal -->
     @include('dpi.scheduling.modal', ['window' => $window, 'spots' => $spots])
 
@@ -56,33 +74,39 @@
 @endif
 @if(isset($populatedWindows) && $populatedWindows->isNotEmpty())
   <h5>@lang('dpi.scheduledWindows')</h5>
-  <div class="text-center justify-content-center d-flex">
-    <table class="table table-hover table-responsive table-condensed ">
-        <thead>
-            <tr>
-                <td>@lang('dpi.window_init_date')</td>
-                <td>@lang('dpi.window_duration')</td>
-                <td>@lang('dpi.break_position_in_window')</td>
-                <td>@lang('dpi.hoi')</td>
-                <td>@lang('dpi.ad_pos_in_break')</td>
-                <td>@lang('dpi.ad_name')</td>
-                <td>@lang('dpi.ad_duration')</td>
-            </tr>
-        </thead>
-        <tbody>
-          @foreach ($populatedWindows as $key => $spot_insertion)
-            <tr>
-                <td>{{ $spot_insertion->window->init_date }}</td>
-                <td>{{ $spot_insertion->window->duration }}</td>
-                <td>{{ $spot_insertion->break_position_in_window }}</td>
-                <td>{{ $spot_insertion->break->optimal_insertion_date }}</td>
-                <td>{{ $spot_insertion->ad_pos_in_break }}</td>
-                <td>{{ $spot_insertion->ad->name }}</td>
-                <td>{{ $spot_insertion->ad->duration }}</td>
-            </tr>
+          @foreach ($populatedWindows as $key => $window)
+            @if($window->SpotInsertion->isNotEmpty())
+            <div class="card d-flex flex-wrap w-50" id="window{{$window->id}}">
+              <div class="card-header">
+                <a class="break-collapse collapsed ml-3" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="breaksw{{$window->id}}" href="#breaksw{{$window->id}}">
+                <span>@lang('dpi.init_date'): {{ $window->init_date }}</span>
+                <span>@lang('dpi.duration'): {{ $window->duration }}</span>
+                </a>
+                <span class="pull-right">
+                  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalScheduling{{$window->id}}">
+                    @lang('dpi.insertNewBreak')
+                  </button>
+                </span>
+              </div>
+              <div class="collapse" id="breaksw{{ $window->id }}">
+              <ul class="list-group list-group-flush collapse">
+                @foreach ($window->SpotInsertion as $key => $SpotInsertion)
+                  <li class="list-group-item">
+                    <div>
+                      <p>@lang('dpi.break_position_in_window'): {{ $SpotInsertion->break_position_in_window }}</p>
+                      <p>@lang('dpi.hoi'): {{ $SpotInsertion->break->optimal_insertion_date }}</p>
+                      <p>@lang('dpi.ad_pos_in_break'): {{ $SpotInsertion->ad_pos_in_break }}</p>
+                      <p>@lang('dpi.ad_name'): {{ $SpotInsertion->ad->name }}</p>
+                      <p>@lang('dpi.ad_duration'): {{ $SpotInsertion->ad->duration }}</p>
+                    </div>
+                  </li>
+                @endforeach
+              </ul>
+            </div>
+          </div>
+
+        @include('dpi.scheduling.modal', ['window' => $window, 'spots' => $spots])
+        @endif
         @endforeach
-        </tbody>
-    </table>
-  </div>
 @endif
 @stop

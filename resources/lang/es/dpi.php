@@ -89,4 +89,5 @@ return [
 'fileGeneration' => 'Generar fichero de programación',
 'getSchedulings' => 'Ver programaciones',
 'event_type' => 'Tipo de evento',
+'insertNewBreak' => 'Insetar un nuevo break',
 ];

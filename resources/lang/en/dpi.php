@@ -89,4 +89,5 @@ return [
 'fileGeneration' => 'Scheduling File Generation',
 'getSchedulings' => 'Show Schedulings',
 'event_type' => 'Event Type',
+'insertNewBreak' => 'Insert New Break',
 ];

@@ -11,4 +11,7 @@ class Windows extends Model
    {
        return $this->belongsTo('App\Channels');
    }
+   public function SpotInsertion(){
+     return $this->hasMany('App\SpotInsertion');
+   }
 }

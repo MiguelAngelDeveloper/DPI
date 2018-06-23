@@ -75,7 +75,7 @@ class SchedulingController extends Controller
         $break = new Breaks;
         $break->optimal_insertion_date = $optimal_insertion_date;
         $break->save();
-        $break_position_in_window = DB::table('spot_insertion')->where('window_id', $windowId)->max('break_position_in_window');
+        $break_position_in_window = DB::table('spot_insertion')->where('windows_id', $windowId)->max('break_position_in_window');
         if($break_position_in_window){
           $break_position_in_window++;
         }else{
@@ -83,7 +83,7 @@ class SchedulingController extends Controller
         }
         foreach ($spots as $key => $spot) {
           $spot_insertion = new SpotInsertion;
-          $spot_insertion->window_id = $windowId;
+          $spot_insertion->windows_id = $windowId;
           $spot_insertion->break_id = $break->id;
           $ad_pos_in_break = DB::table('spot_insertion')->where('break_id', $break->id)->max('ad_pos_in_break');
           if($ad_pos_in_break){
@@ -156,7 +156,7 @@ class SchedulingController extends Controller
   public function fileGeneration(Request $request){
     $schDate = Input::get('schDate');
     $channelId = Input::get('channelId');
-    $spotInsertions = SpotInsertion::whereIn('window_id',
+    $spotInsertions = SpotInsertion::whereIn('windows_id',
     function($query) use ($schDate, $channelId){
         $query->select('id')
         ->from('windows')
@@ -204,10 +204,10 @@ class SchedulingController extends Controller
     Session::flash('schDate', $initDate);
     if($initDate){
 
-      $freeWindows = DB::table('windows')->leftjoin('spot_insertion', 'windows.id','=','spot_insertion.window_id')->whereRaw('spot_insertion.id is null')->whereRaw('date(windows.init_date)=?',$initDate)->where('windows.channel_id', $channelId)->selectRaw('windows.*')->get();
-    //  $populatedWindows = DB::table('windows')->leftjoin('spot_insertion', 'windows.id','=','spot_insertion.window_id')->whereRaw('date(windows.init_date)=?',$initDate)->whereRaw('spot_insertion.id is not null')->selectRaw('spot_insertion.*')->get();
+      $freeWindows = DB::table('windows')->leftjoin('spot_insertion', 'windows.id','=','spot_insertion.windows_id')->whereRaw('spot_insertion.id is null')->whereRaw('date(windows.init_date)=?',$initDate)->where('windows.channel_id', $channelId)->selectRaw('windows.*')->get();
+    //  $populatedWindows = DB::table('windows')->leftjoin('spot_insertion', 'windows.id','=','spot_insertion.windows_id')->whereRaw('date(windows.init_date)=?',$initDate)->whereRaw('spot_insertion.id is not null')->selectRaw('spot_insertion.*')->get();
     DB::connection()->enableQueryLog();
-     $populatedWindows = SpotInsertion::whereIn('window_id',
+     $populatedWindows = SpotInsertion::whereIn('windows_id',
      function($query) use ($initDate, $channelId){
          $query->select('id')
          ->from('windows')
@@ -223,14 +223,12 @@ class SchedulingController extends Controller
      }
 
     } else {
-      $freeWindows = DB::table('windows')->leftjoin('spot_insertion', 'windows.id','=','spot_insertion.window_id')->whereRaw('spot_insertion.id is null')->where('windows.channel_id', $channelId)->selectRaw('windows.*')->get();
-      $populatedWindows = SpotInsertion::whereIn('window_id',
-      function($query) use ($channelId){
-          $query->select('id')
-          ->from('windows')
-          ->where('channel_id', $channelId);
-        }
-      )->get();;
+      $freeWindows = DB::table('windows')->leftjoin('spot_insertion', 'windows.id','=','spot_insertion.windows_id')->whereRaw('spot_insertion.id is null')->where('windows.channel_id', $channelId)->selectRaw('windows.*')->get();
+      $populatedWindows = Windows::where('channel_id',$channelId)->get();
+      foreach ($populatedWindows as $key => $window) {
+        // code...
+        Log::debug($window->SpotInsertion);
+      }
     }
     $channels = Channels::all();
     $spots = Ads::all();

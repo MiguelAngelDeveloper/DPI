@@ -22,5 +22,5 @@ Route::resource('ads', 'AdsController')->middleware('auth');
 Route::resource('scheduling', 'SchedulingController')->middleware('auth');
 Route::resource('reports', 'ReportsController')->middleware('auth');
 Route::post('scheduling/search', 'SchedulingController@search')->middleware('auth');
-Route::get('scheduling/saveBreak', 'SchedulingController@saveBreak');
+//Route::get('scheduling/saveBreak', 'SchedulingController@saveBreak');
 Route::post('scheduling/fileGeneration', 'SchedulingController@fileGeneration');

@@ -61,7 +61,7 @@ class DpiTables extends Migration
           $table->charset = 'utf8';
           $table->collation = 'utf8_unicode_ci';
           $table->increments('id');
-          $table->integer('window_id')->unsigned();
+          $table->integer('windows_id')->unsigned();
           $table->integer('break_id')->unsigned();
           $table->integer('break_position_in_window')->unsigned();
           $table->integer('ad_id')->unsigned()->nullable();
@@ -70,7 +70,7 @@ class DpiTables extends Migration
           $table->timestamps();
           $table->foreign('ad_id')->references('id')->on('ads')->onDelete('cascade');
           $table->foreign('break_id')->references('id')->on('breaks')->onDelete('cascade');
-          $table->foreign('window_id')->references('id')->on('windows')->onDelete('cascade');
+          $table->foreign('windows_id')->references('id')->on('windows')->onDelete('cascade');
 
         });
 

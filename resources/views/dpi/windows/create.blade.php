@@ -22,7 +22,7 @@
 {{ Form::open(['url' => 'windows', 'autocomplete' => 'off']) }}
 
     <div class="form-group mt-3">
-    {{ Form::label('name', 'Nombre del canal') }}
+    {{ Form::label('name', __('dpi.channel_name')) }}
     <select name="name">
       @foreach($channels as $channel)
           <option value="{{$channel->id}}"
@@ -36,11 +36,11 @@
     <div class="form-group">
      <div class="form-row">
        <div class="col">
-          {{ Form::label('init_date', 'Fecha de inicio') }}
+          {{ Form::label('init_date', __('dpi.init_date')) }}
           {{ Form::text('init_date', null, ['class' => 'form-control', 'id' =>'init_date']) }}
       </div>
     <div class="col">
-    {{ Form::label('duration', 'Duración') }}
+    {{ Form::label('duration', __('dpi.duration')) }}
     {{ Form::text('duration', null, ['class' => 'form-control',  'id' =>'duration']) }}
       </div>
     </div>

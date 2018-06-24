@@ -9,7 +9,7 @@
 <?php $message = Session::get('message');?>
 @if($message)
   <div class="alert alert-success">
-  <strong>Success!</strong> {{  Session::get('message') }}
+  <strong>@lang('dpi.success')</strong> {{  Session::get('message') }}
   </div>
 @endif
 <div class="text-center justify-content-center d-flex">

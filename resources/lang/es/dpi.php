@@ -93,4 +93,5 @@ return [
 'error_break_fit_in_window' => 'Error: La hora de inserción escogida más la duración de los anuncios queda fuera de la ventana o entra en conflicto con el break previo.',
 'no_spots_seleted' => 'Error: No se ha insertado ningún anuncio.',
 'no_optimal_insertion_time_selected' => 'Error: No se ha definido la hora de inserción óptima.',
+'success' => '¡Felicidades!',
 ];

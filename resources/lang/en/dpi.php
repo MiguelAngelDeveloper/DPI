@@ -92,6 +92,7 @@ return [
 'insertNewBreak' => 'Insert New Break',
 'error_break_fit_in_window' => 'Error: The selected scheduled time plus the duration of the ads is outside the window or conflicts with the previous break.',
 'dpi_no_spots_seleted' => 'Error: No ads have been selected.',
-'no_optimal_insertion_time_selected' => 'Error: Scheduled time has not been defined.'
+'no_optimal_insertion_time_selected' => 'Error: Scheduled time has not been defined.',
+'success' => 'Success!',
 
 ];

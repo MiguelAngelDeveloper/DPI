@@ -126,7 +126,8 @@ class SchedulingController extends Controller
   public function show($id)
   {
     //
-
+    $channels = Channels::all();
+    return View::make('dpi.scheduling.index', compact('channels'));
   }
 
   /**
@@ -138,7 +139,8 @@ class SchedulingController extends Controller
   public function edit($id)
   {
     //
-    return View::make('dpi.scheduling.edit');
+    $channels = Channels::all();
+    return View::make('dpi.scheduling.index', compact('channels'));
   }
 
   /**
@@ -151,6 +153,8 @@ class SchedulingController extends Controller
   public function update(Request $request, $id)
   {
     //
+    $channels = Channels::all();
+    return View::make('dpi.scheduling.index', compact('channels'));
   }
 
   /**
@@ -162,6 +166,8 @@ class SchedulingController extends Controller
   public function destroy($id)
   {
     //
+    $channels = Channels::all();
+    return View::make('dpi.scheduling.index', compact('channels'));
   }
 
   public function fileGeneration(Request $request){
@@ -193,8 +199,6 @@ class SchedulingController extends Controller
         $zeroFilled2 = '0000';
         $advertiserName = Helpers::addSpacesSuffix($spotInsertion->ad->announcer, 32);
         $spotName = Helpers::addSpacesSuffix($spotInsertion->ad->name, 20);
-        Log::debug($spotInsertion->ad->name.': '.iconv_strlen($spotInsertion->ad->name));
-        Log::debug($spotName.': '.iconv_strlen($spotName));
         $comment = $spotInsertion->ad->tipo;
         $content.= $eventType.' '.$scheduledDate.' '.$scheduledTime
         .' '.$windowStartTime.' '.$windowDuration.' '.$breakNumberWithinWindow
@@ -227,11 +231,6 @@ class SchedulingController extends Controller
          ->from('spot_insertion');
        }
      )->get();
-     $queries = DB::getQueryLog();
-     foreach ($queries as $key => $value) {
-       // code...
-       Log::debug($value);
-     }
 
     } else {
       $freeWindows = DB::table('windows')->leftjoin('spot_insertion', 'windows.id','=','spot_insertion.windows_id')->whereRaw('spot_insertion.id is null')->where('windows.channel_id', $channelId)->selectRaw('windows.*')->get();
@@ -241,10 +240,6 @@ class SchedulingController extends Controller
           ->from('spot_insertion');
         }
       )->get();
-      foreach ($populatedWindows as $key => $window) {
-        // code...
-        Log::debug($window->SpotInsertion);
-      }
     }
     $channels = Channels::all();
     $spots = Ads::all();
@@ -253,8 +248,6 @@ class SchedulingController extends Controller
     }
     return View::make('dpi.scheduling.create', compact('channels'))->with('spots',$spots)->with('freeWindows',$freeWindows)->with('populatedWindows',$populatedWindows);
   }
-
-  //public function saveBreak(Request $request){ }
 
   private function spotsFitsInWindow($optimal_insertion_date, $spots, $windowId){
     $window = Windows::find($windowId);
@@ -281,19 +274,15 @@ class SchedulingController extends Controller
     $break = Breaks::find($breakId);
     $window = Windows::find($windowId);
     $initDateDB = Carbon::parse($window->init_date);
-    Log::debug($break);
     if($break){
       $optimal_insertion_date = $break->optimal_insertion_date;
       $optimal_insertion_date_pr = Carbon::parse($optimal_insertion_date);
       $endOfLastBreak = $initDateDB->copy()->startOfDay()->addHours($optimal_insertion_date_pr->hour)->addminutes($optimal_insertion_date_pr->minute)->addSeconds($optimal_insertion_date_pr->second);
       $spot_insertions = SpotInsertion::where('windows_id', $windowId)->where('break_id', $breakId)->get();
-      Log::debug($spot_insertions);
       foreach ($spot_insertions as $key => $spot_insertion) {
         $spot_pr = Carbon::parse($spot_insertion->ad->duration);
-        Log::debug($spot_pr);
         $endOfLastBreak->addHours($spot_pr->hour)->addminutes($spot_pr->minute)->addSeconds($spot_pr->second);
       }
-      Log::debug($endOfLastBreak);
       return $endOfLastBreak;
     } else {
       return $initDateDB;

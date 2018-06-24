@@ -80,6 +80,7 @@ class ReportsController extends Controller
     public function show($id)
     {
         //
+        return View::make('dpi.reports.create');
     }
 
     /**
@@ -91,6 +92,7 @@ class ReportsController extends Controller
     public function edit($id)
     {
         //
+        return View::make('dpi.reports.create');
     }
 
     /**
@@ -103,6 +105,7 @@ class ReportsController extends Controller
     public function update(Request $request, $id)
     {
         //
+        return View::make('dpi.reports.create');
     }
 
     /**
@@ -114,6 +117,7 @@ class ReportsController extends Controller
     public function destroy($id)
     {
         //
+      return View::make('dpi.reports.create');
     }
 
     private function parseVerFilename($filename){

@@ -44,15 +44,25 @@ $schDate = Session::get('schDate');
 {{ Form::close() }}
 
 @if(isset($populatedWindows) && $populatedWindows->isNotEmpty())
-  {{ Form::open(['url' => 'scheduling/fileGeneration', 'autocomplete' => 'off', 'class' =>'form-inline mt-3']) }}
-    {{ Form::hidden('schDate', $schDate, ['class' => 'form-control', 'id' =>'schDate']) }}
-    {{ Form::hidden('channelId', $channelId, ['class' => 'form-control', 'id' =>'channelId']) }}
-  <button type="submit" class="btn btn-warning btn-lg btn-block">@lang('dpi.fileGeneration')</button>
-  {{ Form::close() }}
+  <?php  $lastInitDate = -1; ?>
+@foreach ($populatedWindows as $key => $window)
+    <?php
+      $actualInitDate = Carbon\Carbon::parse($window->init_date)->copy()->startOfDay();
+      $lastInitDatepr = Carbon\Carbon::parse($lastInitDate)->copy()->startOfDay();
+    ?>
+  @if ($lastInitDate == -1 || $actualInitDate->ne($lastInitDatepr))
+<?php  $lastInitDate = $window->init_date; ?>
+    {{ Form::open(['url' => 'scheduling/fileGeneration', 'autocomplete' => 'off', 'class' =>'form-inline mt-3']) }}
+      {{ Form::hidden('schDate', Carbon\Carbon::parse($window->init_date)->toDateString(), ['class' => 'form-control', 'id' =>'schDate']) }}
+      {{ Form::hidden('channelId', $channelId, ['class' => 'form-control', 'id' =>'channelId']) }}
+    <button type="submit" class="btn btn-warning btn-lg btn-block">@lang('dpi.fileGeneration')</button>
+      {{ Form::close() }}
+  @endif
   <div class="text-center justify-content-center d-flex">
     <table class="table table-hover table-responsive table-condensed">
         <thead class="thead-dark">
             <tr>
+                <th>Parseado</th>
                 <th>@lang('dpi.window_init_date')</th>
                 <th>@lang('dpi.window_duration')</th>
                 <th>@lang('dpi.break_position_in_window')</th>
@@ -63,21 +73,23 @@ $schDate = Session::get('schDate');
             </tr>
         </thead>
         <tbody>
-          @foreach ($populatedWindows as $key => $spot_insertion)
-            <tr>
-                <td>{{ $spot_insertion->window->init_date }}</td>
-                <td>{{ $spot_insertion->window->duration }}</td>
-                <td>{{ $spot_insertion->break_position_in_window }}</td>
-                <td>{{ $spot_insertion->break->optimal_insertion_date }}</td>
-                <td>{{ $spot_insertion->ad_pos_in_break }}</td>
-                <td>{{ $spot_insertion->ad->name }}</td>
-                <td>{{ $spot_insertion->ad->duration }}</td>
-            </tr>
-        @endforeach
+            @foreach ($window->SpotInsertion as $key => $spot_insertion)
+              <tr>
+                <td>{{ Carbon\Carbon::parse($window->init_date)->toDateString() }}</td>
+                  <td>{{ $window->init_date }}</td>
+                  <td>{{ $window->duration }}</td>
+                  <td>{{ $spot_insertion->break_position_in_window }}</td>
+                  <td>{{ $spot_insertion->break->optimal_insertion_date }}</td>
+                  <td>{{ $spot_insertion->ad_pos_in_break }}</td>
+                  <td>{{ $spot_insertion->ad->name }}</td>
+                  <td>{{ $spot_insertion->ad->duration }}</td>
+              </tr>
+              @endforeach
         </tbody>
     </table>
   </div>
-@else
+@endforeach
+@elseif($schDate)
   <div class="alert alert-primary">No hay programaciones para la fecha escogida</div>
 @endif
 @stop

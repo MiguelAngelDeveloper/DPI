@@ -22,7 +22,7 @@
 {{ Form::model($ad, array('route' => array('ads.update', $ad->id), 'method' => 'PUT', 'autocomplete' => 'off')) }}
     <div class="form-group mt-3">
     {{ Form::label('name', __('dpi.name')) }}
-    {{ Form::text('name', null, ['class' => 'form-control', 'maxlength' => 100]) }}
+    {{ Form::text('name', null, ['class' => 'form-control', 'maxlength' => 20]) }}
     </div>
     <div class="form-group">
      <div class="form-row">
@@ -32,7 +32,7 @@
        </div>
        <div class="col">
       {{ Form::label('tipo',__('dpi.type')) }}
-      {{ Form::select('tipo', ['Scheduled' => 'Scheduled', 'Fill' => 'Fill'] ,null, ['class' => 'form-control'] ) }}
+      {{ Form::select('tipo', ['Sch' => 'Scheduled', 'Fill' => 'Fill'] ,null, ['class' => 'form-control'] ) }}
       </div>
     </div>
   </div>
@@ -44,7 +44,7 @@
     </div>
     <div class="col">
     {{ Form::label('announcer', __('dpi.announcer')) }}
-    {{ Form::text('announcer', null, ['class' => 'form-control',  'maxlength' => 20]) }}
+    {{ Form::text('announcer', null, ['class' => 'form-control',  'maxlength' => 32]) }}
     </div>
   </div>
 </div>

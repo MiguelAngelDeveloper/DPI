@@ -97,8 +97,20 @@ class SchedulingController extends Controller
           $spot_insertion->event_type = $event_type;
           $spot_insertion->save();
         }
+
         DB::commit();
-        return response()->json(['windowId' => $windowId, 'breakId' => $break->id,'optimal_insertion_date' => $optimal_insertion_date, 'error' => 0]);
+        return response()->json(['windowId' => $windowId,
+        'str_break_position_in_window' => __('dpi.break_position_in_window'),
+         'break_position_in_window' => $spot_insertion->break_position_in_window,
+        'str_optimal_insertion_date' => __('dpi.hoi'),
+         'optimal_insertion_date' => $spot_insertion->break->optimal_insertion_date,
+        'str_ad_pos_in_break' =>__('dpi.ad_pos_in_break'),
+         'ad_pos_in_break' => $spot_insertion->ad_pos_in_break,
+        'str_ad_name' => __('dpi.ad_name'),
+         'ad_name' => $spot_insertion->ad->name,
+        'str_ad_duration' => __('dpi.ad_duration'),
+         'ad_duration' => $spot_insertion->ad->duration,
+        'error' => 0]);
 
       } catch(\Exception $e){
         DB::rollback();
@@ -164,31 +176,34 @@ class SchedulingController extends Controller
         ->where('channel_id',$channelId);
       }
     )->get();
-
     $content = '';
-    foreach ($spotInsertions as $key => $spotInsertion) {
-      // code...
-      $eventType = $spotInsertion->event_type;
-      $scheduledDate = Carbon::parse($spotInsertion->window->init_date)->format('md');
-      $scheduledTime = Carbon::parse($spotInsertion->break->optimal_insertion_date)->format('his');
-      $windowStartTime = Carbon::parse($spotInsertion->window->init_date)->format('hi');
-      $windowDuration = Carbon::parse($spotInsertion->window->duration)->format('hi');
-      $breakNumberWithinWindow = Helpers::addZerosPreffix($spotInsertion->break_position_in_window,3);
-      $spotPosition = Helpers::addZerosPreffix($spotInsertion->ad_pos_in_break,3);
-      $spotLength = Carbon::parse($spotInsertion->ad->duration)->format('his');
-      $zeroFilled1 = '000000 00000000 000';
-      $spotId = Helpers::addZerosPreffix($spotInsertion->ad->code,11);
-      $zeroFilled2 = '0000';
-      $advertiserName = Helpers::addSpacesSuffix($spotInsertion->ad->announcer, 32);
-      $spotName = Helpers::addSpacesSuffix($spotInsertion->ad->name, 20);
-      Log::debug($spotInsertion->ad->name.': '.iconv_strlen($spotInsertion->ad->name));
-      Log::debug($spotName.': '.iconv_strlen($spotName));
-      $comment = $spotInsertion->ad->tipo;
-      $content.= $eventType.' '.$scheduledDate.' '.$scheduledTime
-      .' '.$windowStartTime.' '.$windowDuration.' '.$breakNumberWithinWindow
-      .' '.$spotPosition.' '.$spotLength.' '.$zeroFilled1.' '.$spotId.' '.$zeroFilled2
-      .' '.$advertiserName.' '.$spotName.' '.$comment."\r\n";
+    $windows = Windows::whereDate('init_date', '=', $schDate)->get();
+    foreach ($windows as $key => $window) {
+      foreach ($window->SpotInsertion as $key => $spotInsertion) {
+        // code...
+        $eventType = $spotInsertion->event_type;
+        $scheduledDate = Carbon::parse($window->init_date)->format('md');
+        $scheduledTime = Carbon::parse($spotInsertion->break->optimal_insertion_date)->format('His');
+        $windowStartTime = Carbon::parse($window->init_date)->format('Hi');
+        $windowDuration = Carbon::parse($window->duration)->format('Hi');
+        $breakNumberWithinWindow = Helpers::addZerosPreffix($spotInsertion->break_position_in_window,3);
+        $spotPosition = Helpers::addZerosPreffix($spotInsertion->ad_pos_in_break,3);
+        $spotLength = Carbon::parse($spotInsertion->ad->duration)->format('His');
+        $zeroFilled1 = '000000 00000000 000';
+        $spotId = Helpers::addZerosPreffix($spotInsertion->ad->code,11);
+        $zeroFilled2 = '0000';
+        $advertiserName = Helpers::addSpacesSuffix($spotInsertion->ad->announcer, 32);
+        $spotName = Helpers::addSpacesSuffix($spotInsertion->ad->name, 20);
+        Log::debug($spotInsertion->ad->name.': '.iconv_strlen($spotInsertion->ad->name));
+        Log::debug($spotName.': '.iconv_strlen($spotName));
+        $comment = $spotInsertion->ad->tipo;
+        $content.= $eventType.' '.$scheduledDate.' '.$scheduledTime
+        .' '.$windowStartTime.' '.$windowDuration.' '.$breakNumberWithinWindow
+        .' '.$spotPosition.' '.$spotLength.' '.$zeroFilled1.' '.$spotId.' '.$zeroFilled2
+        .' '.$advertiserName.' '.$spotName.' '.$comment."\r\n";
+      }
     }
+
     $content.="END\r\n";
     $channel = Channels::find($channelId);
     return response()->streamDownload(function () use ($content){
@@ -207,15 +222,12 @@ class SchedulingController extends Controller
       $freeWindows = DB::table('windows')->leftjoin('spot_insertion', 'windows.id','=','spot_insertion.windows_id')->whereRaw('spot_insertion.id is null')->whereRaw('date(windows.init_date)=?',$initDate)->where('windows.channel_id', $channelId)->selectRaw('windows.*')->get();
     //  $populatedWindows = DB::table('windows')->leftjoin('spot_insertion', 'windows.id','=','spot_insertion.windows_id')->whereRaw('date(windows.init_date)=?',$initDate)->whereRaw('spot_insertion.id is not null')->selectRaw('spot_insertion.*')->get();
     DB::connection()->enableQueryLog();
-     $populatedWindows = SpotInsertion::whereIn('windows_id',
-     function($query) use ($initDate, $channelId){
-         $query->select('id')
-         ->from('windows')
-         ->whereDate('init_date', '=', $initDate)
-         ->where('channel_id', $channelId);
+     $populatedWindows = Windows::where('channel_id',$channelId)->where('init_date', $initDate)->where('channel_id',$channelId)->whereIn('id',
+     function($query) {
+         $query->select('windows_id')
+         ->from('spot_insertion');
        }
      )->get();
-
      $queries = DB::getQueryLog();
      foreach ($queries as $key => $value) {
        // code...
@@ -224,7 +236,12 @@ class SchedulingController extends Controller
 
     } else {
       $freeWindows = DB::table('windows')->leftjoin('spot_insertion', 'windows.id','=','spot_insertion.windows_id')->whereRaw('spot_insertion.id is null')->where('windows.channel_id', $channelId)->selectRaw('windows.*')->get();
-      $populatedWindows = Windows::where('channel_id',$channelId)->get();
+      $populatedWindows = Windows::where('channel_id',$channelId)->whereIn('id',
+      function($query) {
+          $query->select('windows_id')
+          ->from('spot_insertion');
+        }
+      )->get();
       foreach ($populatedWindows as $key => $window) {
         // code...
         Log::debug($window->SpotInsertion);

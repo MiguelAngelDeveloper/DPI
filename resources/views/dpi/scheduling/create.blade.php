@@ -74,6 +74,7 @@
 @endif
 @if(isset($populatedWindows) && $populatedWindows->isNotEmpty())
   <h5>@lang('dpi.scheduledWindows')</h5>
+    <div id="acordeon">
           @foreach ($populatedWindows as $key => $window)
             @if($window->SpotInsertion->isNotEmpty())
             <div class="card d-flex flex-wrap w-50" id="window{{$window->id}}">
@@ -108,5 +109,6 @@
         @include('dpi.scheduling.modal', ['window' => $window, 'spots' => $spots])
         @endif
         @endforeach
+      </div>
 @endif
 @stop

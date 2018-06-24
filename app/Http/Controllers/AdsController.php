@@ -50,11 +50,11 @@ class AdsController extends Controller
         //
 
       $rules = array(
-           'name'       => 'required|unique:ads',
-           'code'      => 'required|max:11|unique:ads',
+           'name'       => 'required|unique:ads|max:20',
+           'code'      => 'required|max:11|unique:ads|regex:/^[\dA-Z\-\_]+$/',
            'duration' => 'required|size:8',
            'tipo' => 'required',
-           'announcer' => 'required|max:20'
+           'announcer' => 'required|max:32'
        );
        $validator = Validator::make(Input::all(), $rules);
 
@@ -122,11 +122,11 @@ class AdsController extends Controller
     {
         //
         $rules = array(
-          'name'       => 'required|unique:ads',
-          'code'      => 'required|max:11|unique:ads',
+          'name'       => 'required|unique:ads|max:20',
+          'code'      => 'required|max:11|unique:ads|regex:/^[\dA-Z\-\_]+$/',
           'duration' => 'required|size:8',
           'tipo' => 'required',
-          'announcer' => 'required|max:20'
+          'announcer' => 'required|max:32'
          );
          $validator = Validator::make(Input::all(), $rules);
 

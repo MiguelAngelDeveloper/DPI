@@ -31,7 +31,7 @@ class DpiTables extends Migration
             $table->increments('id');
             $table->string('name',20)->unique();
             $table->String('duration',8);
-            $table->string('tipo',100);
+            $table->string('tipo',4);
             $table->string('code',11)->unique();
             $table->string('announcer',32);
             $table->timestamps();

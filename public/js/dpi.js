@@ -16,6 +16,9 @@ $(document).ready(function(){
       */
       /* attach a submit handler to the form */
       $('.spotSelect').multiSelect();
+      $('.optimal_insertion_date').timepicker({
+        timeFormat: 'HH:mm:ss'
+      });
      $(".modalBreakForm").submit(function(event) {
 
          /* stop form from submitting normally */
@@ -43,14 +46,20 @@ $(document).ready(function(){
                  newBreak.addClass("list-group-item");
                  var innerDiv = $("<div>");
                  var p1 = $("<p>");
-                 p1.text("Break Id: "+data.breakId);
+                 p1.text(data.str_break_position_in_window+": "+data.break_position_in_window);
                  var p2 = $("<p>");
-                 p2.text("Window Id: "+data.windowId);
+                 p2.text(data.str_optimal_insertion_date+": "+data.optimal_insertion_date);
                  var p3 = $("<p>");
-                 p3.text("Optimal Insertion Date: "+data.optimal_insertion_date);
+                 p3.text(data.str_ad_pos_in_break+": "+data.ad_pos_in_break);
+                 var p4 = $("<p>");
+                 p4.text(data.str_ad_name+": "+data.ad_name);
+                 var p5 = $("<p>");
+                 p5.text(data.str_ad_duration+": "+data.ad_duration);
                  innerDiv.append(p1);
                  innerDiv.append(p2);
                  innerDiv.append(p3);
+                 innerDiv.append(p4);
+                 innerDiv.append(p5);
                  newBreak.append(innerDiv);
 /*
                  newBreak = "<div id=\"break"+data.breakId+"\"><button type=\"button\" class=\"btn btn-primary\">"
@@ -83,9 +92,6 @@ $(document).ready(function(){
       });
       $('#duration').timepicker();
       $('#duration_ad').timepicker({
-        timeFormat: 'HH:mm:ss'
-      });
-      $('.optimal_insertion_date').timepicker({
         timeFormat: 'HH:mm:ss'
       });
 });

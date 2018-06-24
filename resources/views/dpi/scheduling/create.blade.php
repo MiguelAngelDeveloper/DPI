@@ -49,7 +49,7 @@
 @if(isset($freeWindows) && $freeWindows->isNotEmpty())
   <h5>@lang('dpi.freeWindows')</h5>
   @foreach ($freeWindows as $key => $window)
-      <div class="card d-flex flex-wrap w-50" id="window{{$window->id}}">
+      <div class="card d-flex flex-wrap w-75" id="window{{$window->id}}">
         <div class="card-header">
           <a class="break-collapse collapsed ml-3" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="breaksw{{$window->id}}" href="#breaksw{{$window->id}}">
           <span>@lang('dpi.init_date'): {{ $window->init_date }}</span>
@@ -77,7 +77,7 @@
     <div id="acordeon">
           @foreach ($populatedWindows as $key => $window)
             @if($window->SpotInsertion->isNotEmpty())
-            <div class="card d-flex flex-wrap w-50" id="window{{$window->id}}">
+            <div class="card d-flex flex-wrap w-75" id="window{{$window->id}}">
               <div class="card-header">
               <span>@lang('dpi.init_date'): {{ $window->init_date }}</span>
               <span>@lang('dpi.duration'): {{ $window->duration }}</span>

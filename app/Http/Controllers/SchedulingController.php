@@ -225,13 +225,12 @@ class SchedulingController extends Controller
       $freeWindows = DB::table('windows')->leftjoin('spot_insertion', 'windows.id','=','spot_insertion.windows_id')->whereRaw('spot_insertion.id is null')->whereRaw('date(windows.init_date)=?',$initDate)->where('windows.channel_id', $channelId)->selectRaw('windows.*')->get();
     //  $populatedWindows = DB::table('windows')->leftjoin('spot_insertion', 'windows.id','=','spot_insertion.windows_id')->whereRaw('date(windows.init_date)=?',$initDate)->whereRaw('spot_insertion.id is not null')->selectRaw('spot_insertion.*')->get();
     DB::connection()->enableQueryLog();
-     $populatedWindows = Windows::where('channel_id',$channelId)->where('init_date', $initDate)->where('channel_id',$channelId)->whereIn('id',
+     $populatedWindows = Windows::where('channel_id',$channelId)->whereDate('init_date', $initDate)->where('channel_id',$channelId)->whereIn('id',
      function($query) {
          $query->select('windows_id')
          ->from('spot_insertion');
        }
      )->get();
-
     } else {
       $freeWindows = DB::table('windows')->leftjoin('spot_insertion', 'windows.id','=','spot_insertion.windows_id')->whereRaw('spot_insertion.id is null')->where('windows.channel_id', $channelId)->selectRaw('windows.*')->get();
       $populatedWindows = Windows::where('channel_id',$channelId)->whereIn('id',

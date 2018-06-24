@@ -170,6 +170,9 @@ class ReportsController extends Controller
           $EOF = true;
         }
       }
+      if(!$EOF){
+        throw new \Exception('Error Processing Verification File. Incorrect file format.', 1);
+      }
       return $reports;
     } catch (\Exception $e) {
       return -1;

@@ -94,13 +94,13 @@
               <ul class="list-group list-group-flush collapse">
                 @foreach ($window->SpotInsertion as $key => $SpotInsertion)
                   <li class="list-group-item">
-                    <div>
-                      <p>@lang('dpi.break_position_in_window'): {{ $SpotInsertion->break_position_in_window }}</p>
-                      <p>@lang('dpi.hoi'): {{ $SpotInsertion->break->optimal_insertion_date }}</p>
-                      <p>@lang('dpi.ad_pos_in_break'): {{ $SpotInsertion->ad_pos_in_break }}</p>
-                      <p>@lang('dpi.ad_name'): {{ $SpotInsertion->ad->name }}</p>
-                      <p>@lang('dpi.ad_duration'): {{ $SpotInsertion->ad->duration }}</p>
-                    </div>
+                    <dl class="dl-horizontal">
+                      <dt>@lang('dpi.break_position_in_window')</dt><dd>{{ $SpotInsertion->break_position_in_window }}</dd>
+                      <dt>@lang('dpi.hoi')</dt><dd>{{ $SpotInsertion->break->optimal_insertion_date }}</dd>
+                      <dt>@lang('dpi.ad_pos_in_break')</dt><dd>{{ $SpotInsertion->ad_pos_in_break }}</dd>
+                      <dt>@lang('dpi.ad_name')</dt><dd>{{ $SpotInsertion->ad->name }}</dd>
+                      <dt>@lang('dpi.ad_duration')</dt><dd>{{ $SpotInsertion->ad->duration }}</dd>
+                    </dl>
                   </li>
                 @endforeach
               </ul>

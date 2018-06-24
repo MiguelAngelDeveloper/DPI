@@ -46,7 +46,7 @@ return [
 'month' => 'Mes',
 'day' => 'Día',
 'airedSpotDate' => 'Fecha emisión anuncio',
-'scheduledTime' => 'Fecha programada',
+'scheduledTime' => 'Hora óptima de inserción',
 'spotLenght' => 'Longitud anuncio',
 'actualAiredTime' => 'Hora real de emisión',
 'actualAiredLength' => 'Longitud real emitida',

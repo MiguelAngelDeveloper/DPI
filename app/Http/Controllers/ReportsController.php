@@ -9,6 +9,7 @@ use Validator;
 use Input;
 use Redirect;
 use File;
+use Carbon\Carbon;
 
 class ReportsController extends Controller
 {
@@ -133,11 +134,11 @@ class ReportsController extends Controller
       $reports = array();
       foreach ($lines as $index => $line) {
         $members = explode(' ',trim($line));
-        $report['airedSpotDate'] = $members[1];
-        $report['scheduledTime'] = $members[2];
-        $report['spotLenght'] = $members[7];
-        $report['actualAiredTime'] = $members[8];
-        $report['actualAiredLength'] = $members[9];
+        $report['airedSpotDate'] = Carbon::createFromFormat('md', $members[1])->format('j/m');
+        $report['scheduledTime'] = Carbon::createFromFormat('His', $members[2])->format('H:i:s');
+        $report['spotLenght'] = Carbon::createFromFormat('His', $members[7])->format('H:i:s');
+        $report['actualAiredTime'] = Carbon::createFromFormat('His', $members[8])->format('H:i:s');
+        $report['actualAiredLength'] = Carbon::createFromFormat('Hisu', $members[9].'0000')->format('H:i:s.v');
         $report['actualAiredPosition'] = $members[10];
         $report['spotId'] = $members[11];
         $report['statusCode'] =Helpers::getVerFileStatusCode($members[12]);

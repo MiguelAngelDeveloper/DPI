@@ -257,19 +257,48 @@ class SchedulingController extends Controller
   //public function saveBreak(Request $request){ }
 
   private function spotsFitsInWindow($optimal_insertion_date, $spots, $windowId){
-
     $window = Windows::find($windowId);
+
     $initDateDB = Carbon::parse($window->init_date);
     $durationBD = Carbon::parse($window->duration);
     $optimal_insertion_date_pr = Carbon::parse($optimal_insertion_date);
     $endDateDB = $initDateDB->copy()->addHours($durationBD->hour)->addminutes($durationBD->minute);
     $sumSpotsDuration = $initDateDB->copy()->startOfDay()->addHours($optimal_insertion_date_pr->hour)->addminutes($optimal_insertion_date_pr->minute)->addSeconds($optimal_insertion_date_pr->second);
+    $optimal_insertion_date_start = $initDateDB->copy()->startOfDay()->addHours($optimal_insertion_date_pr->hour)->addminutes($optimal_insertion_date_pr->minute)->addSeconds($optimal_insertion_date_pr->second);
+
     foreach ($spots as $key => $spot) {
       $spotDB = Ads::find($spot);
       $spot_pr = Carbon::parse($spotDB->duration);
       $sumSpotsDuration->addHours($spot_pr->hour)->addminutes($spot_pr->minute)->addSeconds($spot_pr->second);
     }
-    return $sumSpotsDuration->gte($initDateDB) && $sumSpotsDuration->lte($endDateDB);
+    $lastBreakDuration = $this->getLastBreakDuration($windowId);
+    return $optimal_insertion_date_start->gte($lastBreakDuration) && $sumSpotsDuration->lte($endDateDB);
+  }
+
+  private function getLastBreakDuration($windowId){
+    $maxBreakPosition =  SpotInsertion::where('windows_id', $windowId)->max('break_position_in_window');
+    $breakId = SpotInsertion::where('windows_id', $windowId)->where('break_position_in_window', $maxBreakPosition)->max('break_id');
+    $break = Breaks::find($breakId);
+    $window = Windows::find($windowId);
+    $initDateDB = Carbon::parse($window->init_date);
+    Log::debug($break);
+    if($break){
+      $optimal_insertion_date = $break->optimal_insertion_date;
+      $optimal_insertion_date_pr = Carbon::parse($optimal_insertion_date);
+      $endOfLastBreak = $initDateDB->copy()->startOfDay()->addHours($optimal_insertion_date_pr->hour)->addminutes($optimal_insertion_date_pr->minute)->addSeconds($optimal_insertion_date_pr->second);
+      $spot_insertions = SpotInsertion::where('windows_id', $windowId)->where('break_id', $breakId)->get();
+      Log::debug($spot_insertions);
+      foreach ($spot_insertions as $key => $spot_insertion) {
+        $spot_pr = Carbon::parse($spot_insertion->ad->duration);
+        Log::debug($spot_pr);
+        $endOfLastBreak->addHours($spot_pr->hour)->addminutes($spot_pr->minute)->addSeconds($spot_pr->second);
+      }
+      Log::debug($endOfLastBreak);
+      return $endOfLastBreak;
+    } else {
+      return $initDateDB;
+    }
+
   }
 
 

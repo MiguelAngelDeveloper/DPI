@@ -69,6 +69,7 @@ $(document).ready(function(){
                  +"</button></div>"
                  */
                  $( "#breaksw"+data.windowId+">ul" ).append(newBreak);
+                  $( "#breaksw"+data.windowId).addClass("show");
                  $('#modalScheduling'+data.windowId).modal('hide');
                }else{
                    alert('ERROR:'+data.errormsg);

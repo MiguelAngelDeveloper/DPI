@@ -60,14 +60,14 @@ class SchedulingController extends Controller
       $event_type = $request->input('event_type');
 
     if(!$optimal_insertion_date){
-        return response()->json(['errormsg' => 'Error: No se ha definido la hora de inserción óptima.', 'error' => 1]);
+        return response()->json(['errormsg' => __('dpi.no_optimal_insertion_time_selected'), 'error' => 1]);
     }
     if(!$spots){
-        return response()->json(['errormsg' => 'Error: No se ha insertado ningún anuncio.', 'error' => 1]);
+        return response()->json(['errormsg' => __('dpi.no_spots_seleted'), 'error' => 1]);
     }
 
     if(!$this->spotsFitsInWindow($optimal_insertion_date, $spots, $windowId)){
-      return response()->json(['errormsg' => 'Error: La duración de todos los anuncios a partir de la hora de inserción óptima sobrepasa la de la ventana.', 'error' => 1]);
+      return response()->json(['errormsg' => __('dpi.error_break_fit_in_window'), 'error' => 1]);
     }
       try{
         DB::beginTransaction();

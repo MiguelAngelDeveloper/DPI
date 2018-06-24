@@ -79,14 +79,15 @@
             @if($window->SpotInsertion->isNotEmpty())
             <div class="card d-flex flex-wrap w-50" id="window{{$window->id}}">
               <div class="card-header">
-                <a class="break-collapse collapsed ml-3" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="breaksw{{$window->id}}" href="#breaksw{{$window->id}}">
-                <span>@lang('dpi.init_date'): {{ $window->init_date }}</span>
-                <span>@lang('dpi.duration'): {{ $window->duration }}</span>
-                </a>
+              <span>@lang('dpi.init_date'): {{ $window->init_date }}</span>
+              <span>@lang('dpi.duration'): {{ $window->duration }}</span>
                 <span class="pull-right">
-                  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalScheduling{{$window->id}}">
+                  <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#modalScheduling{{$window->id}}">
                     @lang('dpi.insertNewBreak')
                   </button>
+                  <button class="btn btn-light break-collapse collapsed ml-3" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="breaksw{{$window->id}}" data-target="#breaksw{{$window->id}}">
+                    <i class="fa fa-fw fa-angle-double-down"></i>
+                </button>
                 </span>
               </div>
               <div class="collapse" id="breaksw{{ $window->id }}">

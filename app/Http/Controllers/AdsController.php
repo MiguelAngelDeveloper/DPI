@@ -122,8 +122,8 @@ class AdsController extends Controller
     {
         //
         $rules = array(
-          'name'       => 'required|unique:ads|max:20',
-          'code'      => 'required|max:11|unique:ads|regex:/^[\dA-Z\-\_]+$/',
+          'name'       => 'required|max:20',
+          'code'      => 'required|max:11|regex:/^[\dA-Z\-\_]+$/',
           'duration' => 'required|size:8',
           'tipo' => 'required',
           'announcer' => 'required|max:32'

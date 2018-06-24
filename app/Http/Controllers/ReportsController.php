@@ -118,7 +118,7 @@ class ReportsController extends Controller
     private function parseVerFilename($filename){
     $parsedFilename = array();
     if( preg_match("/([1-9A-C])([0-3][0-9])([\d]{2})([\d]{3})\.ver/" , $filename, $matches)) {
-      $parsedFilename["month"] = Helpers::getMonthCCMSStyle($matches[1]);
+      $parsedFilename["month"] = Helpers::decodeMonthCCMSStyle($matches[1]);
       $parsedFilename["day"] = $matches[2];
       $parsedFilename["network"] = $matches[3];
       $parsedFilename["zone"] = $matches[4];

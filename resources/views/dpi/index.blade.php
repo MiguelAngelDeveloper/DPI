@@ -119,9 +119,6 @@
           </a>
           <ul class="sidenav-second-level collapse" id="collapseReports">
             <li>
-              <a href="{{ URL::to('/reports') }}">@lang('dpi.view')</a>
-            </li>
-            <li>
               <a href="{{ URL::to('/reports/create') }}">@lang('dpi.verifile')</a>
             </li>
           </ul>

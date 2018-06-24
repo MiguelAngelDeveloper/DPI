@@ -2,7 +2,7 @@
 @section('content')
   <ol class="breadcrumb">
     <li class="breadcrumb-item">
-      <a href="{{ URL::to('reports') }}">@lang('dpi.reports')</a>
+      <a href="{{ URL::to('reports/create') }}">@lang('dpi.reports')</a>
     </li>
     <li class="breadcrumb-item active">@lang('dpi.verifile')</li>
   </ol>

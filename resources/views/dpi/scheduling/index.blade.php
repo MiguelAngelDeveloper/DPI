@@ -9,6 +9,7 @@
 <?php
 $channelId = Session::get('channel');
 $schDate = Session::get('schDate');
+Log::debug($schDate);
 ?>
   <!-- if there are creation errors, they will show here -->
   @if($errors->all())
@@ -62,7 +63,6 @@ $schDate = Session::get('schDate');
     <table class="table table-hover table-responsive table-condensed">
         <thead class="thead-dark">
             <tr>
-                <th>Parseado</th>
                 <th>@lang('dpi.window_init_date')</th>
                 <th>@lang('dpi.window_duration')</th>
                 <th>@lang('dpi.break_position_in_window')</th>
@@ -75,7 +75,6 @@ $schDate = Session::get('schDate');
         <tbody>
             @foreach ($window->SpotInsertion as $key => $spot_insertion)
               <tr>
-                <td>{{ Carbon\Carbon::parse($window->init_date)->toDateString() }}</td>
                   <td>{{ $window->init_date }}</td>
                   <td>{{ $window->duration }}</td>
                   <td>{{ $spot_insertion->break_position_in_window }}</td>
@@ -89,7 +88,7 @@ $schDate = Session::get('schDate');
     </table>
   </div>
 @endforeach
-@elseif($schDate)
+@elseif($channelId)
   <div class="alert alert-primary">No hay programaciones para la fecha escogida</div>
 @endif
 @stop

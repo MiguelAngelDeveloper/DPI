@@ -26,7 +26,7 @@ class Helpers {
     }
     return $data;
   }
-  public static function getMonthCCMSStyle($month){
+  public static function decodeMonthCCMSStyle($month){
     switch ($month) {
       case 'A':
       return '10';
@@ -35,7 +35,23 @@ class Helpers {
       return '11';
       break;
       case 'C':
-      return '11';
+      return '12';
+      break;
+      default:
+      return $month;
+      break;
+    }
+  }
+  public static function encodeMonthCCMSStyle($month){
+    switch ($month) {
+      case '10':
+      return 'A';
+      break;
+      case '11':
+      return 'B';
+      break;
+      case '12':
+      return 'C';
       break;
       default:
       return $month;
@@ -44,7 +60,7 @@ class Helpers {
   }
   public static function getSchFilename($date, $network, $zone){
     $dateParsed = Carbon::parse($date);
-    $month = Helpers::getMonthCCMSStyle($dateParsed->month);
+    $month = Helpers::encodeMonthCCMSStyle($dateParsed->month);
     $day = Helpers::addZerosPreffix($dateParsed->day, 2);
     return $month.$day.$network.$zone.'.SCH';
   }

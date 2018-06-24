@@ -12,15 +12,15 @@
   <strong>@lang('dpi.success')</strong> {{  Session::get('message') }}
   </div>
 @endif
-<div class="container text-center justify-content-center d-flex">
+<div class="text-center justify-content-center d-flex">
   <table class="table table-hover table-responsive">
-      <thead>
+      <thead class="thead-dark">
           <tr>
-              <td>@lang('dpi.id')</td>
-              <td>@lang('dpi.channel_name')</td>
-              <td>@lang('dpi.init_date')</td>
-              <td>@lang('dpi.duration')</td>
-              <td>@lang('dpi.actions')</td>
+              <th>@lang('dpi.id')</th>
+              <th>@lang('dpi.channel_name')</th>
+              <th>@lang('dpi.init_date')</th>
+              <th>@lang('dpi.duration')</th>
+              <th>@lang('dpi.actions')</th>
           </tr>
       </thead>
       <tbody>

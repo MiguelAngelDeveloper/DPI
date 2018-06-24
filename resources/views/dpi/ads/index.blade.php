@@ -12,17 +12,17 @@
   <strong>Success!</strong> {{  Session::get('message') }}
   </div>
 @endif
-<div class="container text-center justify-content-center d-flex">
+<div class="text-center justify-content-center d-flex">
   <table class="table table-hover table-responsive">
-      <thead>
+      <thead class="thead-dark">
           <tr>
-              <td>@lang('dpi.id')</td>
-              <td>@lang('dpi.name')</td>
-              <td>@lang('dpi.duration')</td>
-              <td>@lang('dpi.type')</td>
-              <td>@lang('dpi.code')</td>
-              <td>@lang('dpi.announcer')</td>
-              <td>@lang('dpi.actions')</td>
+              <th>@lang('dpi.id')</th>
+              <th>@lang('dpi.name')</th>
+              <th>@lang('dpi.duration')</th>
+              <th>@lang('dpi.type')</th>
+              <th>@lang('dpi.code')</th>
+              <th>@lang('dpi.announcer')</th>
+              <th>@lang('dpi.actions')</th>
           </tr>
       </thead>
       <tbody>

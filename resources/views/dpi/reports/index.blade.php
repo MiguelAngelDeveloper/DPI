@@ -2,7 +2,7 @@
 @section('content')
   <ol class="breadcrumb">
     <li class="breadcrumb-item active">
-      <a href="{{ URL::to('reports') }}">@lang('dpi.reports')</a>
+      <a href="{{ URL::to('reports/create') }}">@lang('dpi.reports')</a>
     </li>
   </ol>
 <h1>@lang('dpi.reports')</h1>
@@ -20,29 +20,38 @@
   </div>
 @endif
 @if($fileDetail)
-<div class="text-center justify-contentleft d-flex mb-2">
-<div class="card card-primary">
-  <div class="card-heading">
-    <span class="label label-primary">@lang('dpi.month')</span><span class="badge">  {{ $fileDetail['month'] }} </span>
-    <span class="label label-primary">@lang('dpi.day')</span><span class="badge">  {{ $fileDetail['day'] }} </span>
-    <span class="label label-primary">@lang('dpi.network')</span><span class="badge">  {{ $fileDetail['network'] }} </span>
-    <span class="label label-primary">@lang('dpi.zone')</span><span class="badge"> {{ $fileDetail['zone'] }} </span>
-  </div>
-</div>
-</div>
+<ul class="list-inline mb-2">
+  <li class="list-inline-item justify-content-between align-items-center h3">
+    @lang('dpi.month')
+    <span class="badge badge-warning inline">{{ $fileDetail['month'] }}</span>
+  </li>
+  <li class="list-inline-item justify-content-between align-items-center h3">
+    @lang('dpi.day')
+    <span class="badge badge-warning inline">{{ $fileDetail['day'] }}</span>
+  </li>
+  <li class="list-inline-item justify-content-between align-items-center h3">
+    @lang('dpi.network')
+    <span class="badge badge-warning inline">{{ $fileDetail['network'] }}</span>
+  </li>
+  <li class="list-inline-item justify-content-between align-items-center h3">
+    @lang('dpi.zone')
+    <span class="badge badge-warning inline">{{ $fileDetail['zone'] }}</span>
+  </li>
+</ul>
+
 @endif
 <div class="text-center justify-content-center d-flex">
   <table class="table table-hover table-responsive table-condensed ">
-      <thead>
+      <thead class="thead-dark">
           <tr>
-              <td>@lang('dpi.airedSpotDate')</td>
-              <td>@lang('dpi.scheduledTime')</td>
-              <td>@lang('dpi.spotLenght')</td>
-              <td>@lang('dpi.actualAiredTime')</td>
-              <td>@lang('dpi.actualAiredLength')</td>
-              <td>@lang('dpi.actualAiredPosition')</td>
-              <td>@lang('dpi.spotId')</td>
-              <td>@lang('dpi.statusCode')</td>
+              <th>@lang('dpi.airedSpotDate')</th>
+              <th>@lang('dpi.scheduledTime')</th>
+              <th>@lang('dpi.spotLenght')</th>
+              <th>@lang('dpi.actualAiredTime')</th>
+              <th>@lang('dpi.actualAiredLength')</th>
+              <th>@lang('dpi.actualAiredPosition')</th>
+              <th>@lang('dpi.spotId')</th>
+              <th>@lang('dpi.statusCode')</th>
           </tr>
       </thead>
       <tbody>

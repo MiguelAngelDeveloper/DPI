@@ -83,7 +83,7 @@ return [
 'window_init_date' => 'Fecha de inicio de la ventana',
 'window_duration' => 'Duración de la ventana',
 'break_position_in_window' => 'Posición del break dentro de la ventana',
-'ad_pos_in_break' => 'Posición del anuncio dentro de la ventana',
+'ad_pos_in_break' => 'Posición del anuncio dentro del break',
 'ad_name' => 'Nombre del anuncio',
 'ad_duration' => 'Duración del anuncio',
 'fileGeneration' => 'Generar fichero de programación',

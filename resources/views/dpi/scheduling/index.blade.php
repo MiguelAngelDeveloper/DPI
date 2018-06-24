@@ -2,7 +2,7 @@
 @section('content')
   <ol class="breadcrumb">
     <li class="breadcrumb-item">
-      <a href="{{ URL::to('scheling') }}">@lang('dpi.scheduling')</a>
+      <a href="{{ URL::to('scheduling') }}">@lang('dpi.scheduling')</a>
     </li>
     <li class="breadcrumb-item active">@lang('dpi.getSchedulings')</li>
   </ol>

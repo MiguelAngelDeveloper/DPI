@@ -95,7 +95,6 @@ $(document).ready(function(){
        });
 
      });
-
       $('#sch_init_date').datepicker({
         dateFormat: 'yy-mm-dd',
         controlType: 'select',

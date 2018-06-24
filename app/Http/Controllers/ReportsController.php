@@ -61,10 +61,20 @@ class ReportsController extends Controller
 
           $reports = $this->parseVerFile($file);
           $fileDetail = $this->parseVerFilename($filename);
+
+          if($reports == -1){
+            return View::make('dpi.reports.create')
+              ->withErrors(array('message' => 'El formato del fichero no es válido.'));
+          } elseif ($fileDetail == -1) {
+            return View::make('dpi.reports.create')
+              ->withErrors(array('message' => 'El nombre del fichero no es válido.'));
+          } else{
+            return View::make('dpi.reports.index')->with('reports', $reports)
+            ->with('fileDetail', $fileDetail);
+          }
         //  File::get($request->verificationfile->getRealPath());
         //  return Redirect::to('reports')->with('reports', $reports);
-        return View::make('dpi.reports.index')->with('reports', $reports)
-        ->with('fileDetail', $fileDetail);
+
         }
     }
 
@@ -118,34 +128,52 @@ class ReportsController extends Controller
     }
 
     private function parseVerFilename($filename){
-    $parsedFilename = array();
-    if( preg_match("/([1-9A-C])([0-3][0-9])([\d]{2})([\d]{3})\.ver/" , $filename, $matches)) {
-      $parsedFilename["month"] = Helpers::decodeMonthCCMSStyle($matches[1]);
-      $parsedFilename["day"] = $matches[2];
-      $parsedFilename["network"] = $matches[3];
-      $parsedFilename["zone"] = $matches[4];
-    }
-    return $parsedFilename;
+      try {
+        $parsedFilename = array();
+        if( preg_match("/([1-9A-C])([0-3][0-9])([\d]{2})([\d]{3})\.ver/" , $filename, $matches)) {
+          $parsedFilename["month"] = Helpers::decodeMonthCCMSStyle($matches[1]);
+          $parsedFilename["day"] = $matches[2];
+          $parsedFilename["network"] = $matches[3];
+          $parsedFilename["zone"] = $matches[4];
+        }else{
+          return -1;
+        }
+        return $parsedFilename;
+      } catch (\Exception $e) {
+        return -1;
+      }
 }
 
   private function parseVerFile ($file){
+    try {
       $filepath = $file->getRealPath();
       $contents = File::get($filepath);
       $lines = explode(PHP_EOL,trim($contents));
       $reports = array();
+      $EOF = false;
       foreach ($lines as $index => $line) {
+        if($EOF){
+          throw new \Exception('Error Processing Verification File. Incorrect file format.', 1);
+        }
         $members = explode(' ',trim($line));
-        $report['airedSpotDate'] = Carbon::createFromFormat('md', $members[1])->format('j/m');
-        $report['scheduledTime'] = Carbon::createFromFormat('His', $members[2])->format('H:i:s');
-        $report['spotLenght'] = Carbon::createFromFormat('His', $members[7])->format('H:i:s');
-        $report['actualAiredTime'] = Carbon::createFromFormat('His', $members[8])->format('H:i:s');
-        $report['actualAiredLength'] = Carbon::createFromFormat('Hisu', $members[9].'0000')->format('H:i:s.v');
-        $report['actualAiredPosition'] = $members[10];
-        $report['spotId'] = $members[11];
-        $report['statusCode'] =Helpers::getVerFileStatusCode($members[12]);
-        $reports[] = $report;
+        if($members[0] != 'END') {
+          $report['airedSpotDate'] = Carbon::createFromFormat('md', $members[1])->format('j/m');
+          $report['scheduledTime'] = Carbon::createFromFormat('His', $members[2])->format('H:i:s');
+          $report['spotLenght'] = Carbon::createFromFormat('His', $members[7])->format('H:i:s');
+          $report['actualAiredTime'] = Carbon::createFromFormat('His', $members[8])->format('H:i:s');
+          $report['actualAiredLength'] = Carbon::createFromFormat('Hisu', $members[9].'0000')->format('H:i:s.v');
+          $report['actualAiredPosition'] = $members[10];
+          $report['spotId'] = $members[11];
+          $report['statusCode'] =Helpers::getVerFileStatusCode($members[12]);
+          $reports[] = $report;
+        } else {
+          $EOF = true;
+        }
       }
       return $reports;
+    } catch (\Exception $e) {
+      return -1;
     }
+  }
 
 }

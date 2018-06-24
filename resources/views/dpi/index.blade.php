@@ -199,7 +199,7 @@
     <!-- Page level plugin JavaScript-->
     <script src={{asset("vendor/datatables/jquery.dataTables.js")}}></script>
     <script src={{asset("vendor/datatables/dataTables.bootstrap4.js")}}></script>
-    <script src={{asset("js/jquery-ui.min.js")}}></script>
+    <script src={{asset("js/jquery-ui-1.12.1/jquery-ui.js")}}></script>
     <script src={{asset("js/jquery-ui-timepicker-addon.js")}}></script>
     <script src={{asset("js/datepicker-es.js")}}></script>
     <script src={{asset("js/jquery-ui-timepicker-addon-i18n.min.js")}}></script>

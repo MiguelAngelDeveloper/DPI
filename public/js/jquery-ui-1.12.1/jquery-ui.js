@@ -7923,7 +7923,8 @@ $.extend( Datepicker.prototype, {
 		}
 		if ( !$.datepicker._pos ) { // position below input
 			$.datepicker._pos = $.datepicker._findPos( input );
-			$.datepicker._pos[ 1 ] += input.offsetHeight; // add the height
+			extraHeight = document.documentElement.scrollTop;
+			$.datepicker._pos[ 1 ] += input.offsetHeight - extraHeight; // add the height
 		}
 
 		isFixed = false;

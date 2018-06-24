@@ -69,7 +69,6 @@ class SchedulingController extends Controller
     if(!$this->spotsFitsInWindow($optimal_insertion_date, $spots, $windowId)){
       return response()->json(['errormsg' => 'Error: La duración de todos los anuncios a partir de la hora de inserción óptima sobrepasa la de la ventana.', 'error' => 1]);
     }
-
       try{
         DB::beginTransaction();
         $break = new Breaks;

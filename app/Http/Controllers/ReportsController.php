@@ -21,10 +21,7 @@ class ReportsController extends Controller
     public function index()
     {
         //
-        $reports = array();
-        $fileDetail = array();
-        return View::make('dpi.reports.index')->with('reports', $reports)
-        ->with('fileDetail', $fileDetail);;
+        return View::make('dpi.reports.create');
     }
 
     /**

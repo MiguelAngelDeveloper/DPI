@@ -182,7 +182,7 @@ class SchedulingController extends Controller
       }
     )->get();
     $content = '';
-    $windows = Windows::whereDate('init_date', '=', $schDate)->get();
+    $windows = Windows::whereDate('init_date', '=', $schDate)->where('channel_id',$channelId)->get();
     foreach ($windows as $key => $window) {
       foreach ($window->SpotInsertion as $key => $spotInsertion) {
         // code...

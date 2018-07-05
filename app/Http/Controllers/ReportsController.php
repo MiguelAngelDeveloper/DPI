@@ -45,11 +45,15 @@ class ReportsController extends Controller
     {
         //
         $file = $request->verificationfile;
+        if(!$file){
+          return View::make('dpi.reports.create')
+            ->withErrors(array('message' => 'No se ha seleccionado ningún archivo.'));
+        }
         $filename =$file->getClientOriginalName();
         $allInput = Input::all();
         $allInput['filename'] = $filename;
         $rules = array(
-          'verificationfile'=>'file|max:2048',
+          'verificationfile'=>'file|max:2048|required',
           'filename' => 'regex:/^[1-9A-C][0-3][0-9][\d]{2}[\d]{3}\.ver$/'
         );
         $validator = Validator::make($allInput, $rules);

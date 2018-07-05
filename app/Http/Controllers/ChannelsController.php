@@ -54,7 +54,7 @@ class ChannelsController extends Controller
      // validate
        // read more on validation at http://laravel.com/docs/validation
       $rules = array(
-           'name'       => 'required|max:100',
+           'name'       => 'required|max:100|unique:channels',
            'code'      => 'required|numeric',
            'zone' => 'required|numeric'
        );
@@ -70,7 +70,7 @@ class ChannelsController extends Controller
            $channel = new Channels;
            $channel->name       = Input::get('name');
            $channel->code      = Helpers::addZerosPreffix(Input::get('code'), 2);
-           $channel->zone =  Helpers::addZerosPreffix(Input::get('zone'),3);  
+           $channel->zone =  Helpers::addZerosPreffix(Input::get('zone'),3);
            $channel->save();
 
            // redirect

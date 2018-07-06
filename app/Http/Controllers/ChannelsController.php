@@ -161,34 +161,10 @@ class ChannelsController extends Controller
      //
      // delete
     $channel = Channels::find($id);
-    try {
       $channel->delete();
       // redirect
       Session::flash('message',  __('dpi.ok_deleted', ['item' => __('dpi.channel')]));
       return Redirect::to('channels');
-    } catch (\Exception $e) {
-      $breaks = DB::table('breaks')
-                ->where('channel_id', $channel->id)->get();
-      $message = $e->getMessage();
-      if($e->getCode() == 23000){
-        $ids = '';
-        foreach ($breaks as $key => $value) {
-          # code...
-          if($ids == '' ){
-            $ids = $value->id;
-          }else{
-            $ids = $ids.', '.$value->id;
-          }
-
-        }
-
-        $message =  __('dpi.channel_sql_exception', ['ids' => $ids]);
-      }
-      return Redirect::to('channels')
-          ->withErrors(array('message' => $message));
-    }
-
-
  }
 
 }

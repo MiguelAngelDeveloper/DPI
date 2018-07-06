@@ -173,14 +173,6 @@ class SchedulingController extends Controller
   public function fileGeneration(Request $request){
     $schDate = Input::get('schDate');
     $channelId = Input::get('channelId');
-    $spotInsertions = SpotInsertion::whereIn('windows_id',
-    function($query) use ($schDate, $channelId){
-        $query->select('id')
-        ->from('windows')
-        ->whereDate('init_date', '=', $schDate)
-        ->where('channel_id',$channelId);
-      }
-    )->get();
     $content = '';
     $windows = Windows::whereDate('init_date', '=', $schDate)->where('channel_id',$channelId)->get();
     foreach ($windows as $key => $window) {

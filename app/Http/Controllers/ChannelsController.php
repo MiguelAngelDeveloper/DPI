@@ -66,16 +66,24 @@ class ChannelsController extends Controller
                ->withErrors($validator)
                ->withInput(Input::except('password'));
        } else {
+         try {
+           DB::beginTransaction();
            // store
            $channel = new Channels;
            $channel->name       = Input::get('name');
            $channel->code      = Helpers::addZerosPreffix(Input::get('code'), 2);
            $channel->zone =  Helpers::addZerosPreffix(Input::get('zone'),3);
            $channel->save();
-
+           DB::commit();
            // redirect
            Session::flash('message',  __('dpi.ok_created', ['item' => __('dpi.channel')]));
            return Redirect::to('channels');
+         } catch (\Exception $e) {
+           DB::rollback();
+           Redirect::back()
+           ->withErrors(['msg','Error al insertar el anuncio en BBDD: '.$e.getMessage()])
+          ->withInput(Input::except('password'));
+         }           
        }
  }
 
@@ -137,16 +145,26 @@ class ChannelsController extends Controller
             ->withErrors($validator)
             ->withInput(Input::except('password'));
     } else {
+      try {
+        DB::beginTransaction();
         // store
         $channel = Channels::find($id);
         $channel->name       = Input::get('name');
         $channel->code      = Helpers::addZerosPreffix(Input::get('code'), 2);
         $channel->zone =  Helpers::addZerosPreffix(Input::get('zone'),3);
         $channel->save();
-
+        DB::commit();
         // redirect
         Session::flash('message',  __('dpi.ok_updated', ['item' => __('dpi.channel')]));
         return Redirect::to('channels');
+      } catch (\Exception $e) {
+        DB::rollback();
+        Redirect::back()
+        ->withErrors(['msg','Error al modificar el anuncio en BBDD: '.$e.getMessage()])
+        ->withInput(Input::except('password'));
+      }
+
+
     }
  }
 
@@ -159,12 +177,23 @@ class ChannelsController extends Controller
  public function destroy($id)
  {
      //
-     // delete
-    $channel = Channels::find($id);
-      $channel->delete();
-      // redirect
-      Session::flash('message',  __('dpi.ok_deleted', ['item' => __('dpi.channel')]));
-      return Redirect::to('channels');
+     try {
+        DB::beginTransaction();
+         // delete
+        $channel = Channels::find($id);
+        $channel->delete();
+        DB::commit();
+        // redirect
+        Session::flash('message',  __('dpi.ok_deleted', ['item' => __('dpi.channel')]));
+        return Redirect::to('channels');
+     } catch (\Exception $e) {
+       DB::rollback();
+       Redirect::back()
+       ->withErrors(['msg','Error al eliminar el anuncio en BBDD: '.$e.getMessage()])
+      ->withInput(Input::except('password'));
+     }
+
+
  }
 
 }

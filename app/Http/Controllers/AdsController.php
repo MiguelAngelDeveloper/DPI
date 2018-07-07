@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Ads;
 use View;
 use Redirect;
@@ -64,6 +65,8 @@ class AdsController extends Controller
                ->withErrors($validator)
                ->withInput(Input::except('password'));
        } else {
+         try{
+           DB::beginTransaction();
            // store
            $ad = new Ads;
            $ad->name      = Input::get('name');
@@ -72,11 +75,16 @@ class AdsController extends Controller
            $ad->code    = Input::get('code');
            $ad->announcer =  Input::get('announcer');
            $ad->save();
-
+           DB::commit();
            // redirect
-
            Session::flash('message', __('dpi.ok_created', ['item' => __('dpi.ad')]));
            return Redirect::to('ads');
+         } catch(\Exception $e){
+           DB::rollback();
+           return Redirect::back()
+               ->withErrors(['msg','Error al guardar en BBDD el anuncio: '.$e->getMessage()])
+               ->withInput(Input::except('password'));
+         }
        }
     }
 
@@ -136,7 +144,9 @@ class AdsController extends Controller
                  ->withErrors($validator)
                  ->withInput(Input::except('password'));
          } else {
+           try{
              // store
+             DB::beginTransaction();
              $ad = Ads::find($id);
              $ad->name      = Input::get('name');
              $ad->tipo    = Input::get('tipo');
@@ -144,10 +154,16 @@ class AdsController extends Controller
              $ad->code    = Input::get('code');
              $ad->announcer =  Input::get('announcer');
              $ad->save();
-
+             DB::commit();
              // redirect
              Session::flash('message',  __('dpi.ok_updated', ['item' => __('dpi.ad')]));
              return Redirect::to('ads');
+          }  catch(\Exception $e){
+               DB::rollback();
+               return Redirect::back()
+                   ->withErrors(['msg','Error al modificar en BBDD el anuncio: '.$e->getMessage()])
+                   ->withInput(Input::except('password'));
+             }
          }
     }
 
@@ -160,11 +176,21 @@ class AdsController extends Controller
     public function destroy($id)
     {
         //
-        $ad = Ads::find($id);
-        $ad->delete();
+        try{
+          DB::beginTransaction();
+          $ad = Ads::find($id);
+          $ad->delete();
+          DB::commit();
+          // redirect
+          Session::flash('message',  __('dpi.ok_deleted', ['item' => __('dpi.ad')]));
+          return Redirect::to('ads');
 
-        // redirect
-        Session::flash('message',  __('dpi.ok_deleted', ['item' => __('dpi.ad')]));
-        return Redirect::to('ads');
+        } catch(\Exception $e){
+          DB::rollback();
+          return Redirect::back()
+              ->withErrors(['msg','Error al eliminar en BBDD el anuncio: '.$e->getMessage()])
+              ->withInput(Input::except('password'));
+        }
+
     }
 }

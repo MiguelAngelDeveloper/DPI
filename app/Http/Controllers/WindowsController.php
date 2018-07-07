@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Channels;
 use App\Windows;
 use View;
@@ -82,17 +83,24 @@ class WindowsController extends Controller
       ->withErrors(array('message' => __('dpi.window_duration_error')));
 
     } else{
-
-      // store
-      $window = new Windows;
-      $window->channel_id      = Input::get('name');
-      $window->init_date    = Input::get('init_date');
-      $window->duration =  Input::get('duration');
-      $window->save();
-
-      // redirect
-      Session::flash('message',  __('dpi.ok_created', ['item' => __('dpi.window')]));
-      return Redirect::to('windows');
+        try {
+          DB::beginTransaction();
+          // store
+          $window = new Windows;
+          $window->channel_id      = Input::get('name');
+          $window->init_date    = Input::get('init_date');
+          $window->duration =  Input::get('duration');
+          $window->save();
+          DB::commit();
+          // redirect
+          Session::flash('message',  __('dpi.ok_created', ['item' => __('dpi.window')]));
+          return Redirect::to('windows');
+        } catch (\Exception $e) {
+          DB::rollback();
+          Redirect::back()
+          ->withErrors(['msg','Error al guardar la ventana en BBDD: '.$e.getMessage()])
+          ->withInput(Input::except('password'));
+        }
     }
   }
 
@@ -153,16 +161,24 @@ class WindowsController extends Controller
       ->withErrors($validator)
       ->withInput(Input::except('password'));
     } else {
-      // store
-      $window =  Windows::find($id);
-      $window->channel_id      = Input::get('name');
-      $window->init_date    = Input::get('init_date');
-      $window->duration =  Input::get('duration');
-      $window->save();
-
-      // redirect
-      Session::flash('message',  __('dpi.ok_updated', ['item' => __('dpi.window')]));
-      return Redirect::to('windows');
+      try {
+        DB::beginTransaction();
+        // store
+        $window =  Windows::find($id);
+        $window->channel_id      = Input::get('name');
+        $window->init_date    = Input::get('init_date');
+        $window->duration =  Input::get('duration');
+        $window->save();
+        DB::commit();
+        // redirect
+        Session::flash('message',  __('dpi.ok_updated', ['item' => __('dpi.window')]));
+        return Redirect::to('windows');
+      } catch (\Exception $e) {
+        DB::rollback();
+        Redirect::back()
+        ->withErrors(['msg','Error al modificar la ventana en BBDD: '.$e.getMessage()])
+        ->withInput(Input::except('password'));
+      }
     }
   }
 
@@ -175,12 +191,20 @@ class WindowsController extends Controller
   public function destroy($id)
   {
     //
-    $window = Windows::find($id);
-    $window->delete();
-
-    // redirect
-    Session::flash('message',  __('dpi.ok_deleted', ['item' => __('dpi.window')]));
-    return Redirect::to('windows');
+    try {
+        DB::beginTransaction();
+        $window = Windows::find($id);
+        $window->delete();
+        DB::commit();
+        // redirect
+        Session::flash('message',  __('dpi.ok_deleted', ['item' => __('dpi.window')]));
+        return Redirect::to('windows');
+    } catch (\Exception $e) {
+      DB::rollback();
+      Redirect::back()
+      ->withErrors(['msg','Error al eliminar la ventana en BBDD: '.$e.getMessage()])
+      ->withInput(Input::except('password'));
+    }
   }
 
   private function isWindowInitDateOverlaping($channel_id, $initDate){
